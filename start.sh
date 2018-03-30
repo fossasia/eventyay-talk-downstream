@@ -1,7 +1,9 @@
 #!/bin/bash
 echo Booting new instance of pretalx...
+echo Fetching pretalx
+git submodule update --init --recursive
 echo Patching docker files
-patch -p1 < docker.diff
+patch -p2 < docker.diff
 echo building pretalx docker image
 docker-compose build pretalx && \
 echo Creating volume folders && \
