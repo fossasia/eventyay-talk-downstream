@@ -4,6 +4,12 @@ echo Patching docker files
 patch -p1 < docker.diff
 echo building pretalx docker image
 docker-compose build pretalx && \
+echo Creating volume folders && \
+mkdir -p volumes/mysql-data && \
+mkdir -p volumes/nginx-data && \
+mkdir -p volumes/pretalx-data && \
+mkdir -p volumes/redis-data && \
+chown -R 999:999 volumes && \
 MYSQL_PASSWORD=`LC_CTYPE=C tr -dc 'a-zA-Z0-9'<  /dev/urandom | fold -w 30 | head -1`
 echo Generated mysql root password: $MYSQL_PASSWORD && \
 echo $MYSQL_PASSWORD > conf/mysql-password.secret && \
