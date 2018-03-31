@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ -d "volumes" ]; then
+  echo "ERROR: Volumes directory exists! This script has possibly been run before. Bailing out"
+  echo "Try running \"docker-compose up -d\" instead"
+  exit 0
+fi
 echo Booting new instance of pretalx...
 echo Fetching pretalx
 git submodule update --init --recursive
