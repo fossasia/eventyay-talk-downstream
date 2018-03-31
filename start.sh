@@ -6,7 +6,7 @@ if [ -d "volumes" ]; then
 fi
 echo Booting new instance of pretalx...
 echo Fetching pretalx
-git submodule update --init --recursive
+git submodule update
 echo Patching docker files
 patch -p2 < docker.diff
 echo building pretalx docker image

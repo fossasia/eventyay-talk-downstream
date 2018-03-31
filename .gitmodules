@@ -1,3 +1,4 @@
 [submodule "pretalx"]
 	path = pretalx
 	url = https://github.com/pretalx/pretalx
+        branch = 9aa64ad
