@@ -1,11 +1,11 @@
 # pretalx-docker
-docker setup for a complete pretalx instalation using docker
+docker setup for a complete [pretalx](https://github.com/pretalx/pretalx) instalation using docker
 
 Includes:
 
 * Mysql database
 * nginx 
-* Pretalx (core)
+* Pretalx
 * Redis server for pretalx celery
 * SMTP sink, for testing purposes
 
