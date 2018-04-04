@@ -1,0 +1,12 @@
+diff -ubr pretalx/src/pretalx/settings.py pretalx_patch/src/pretalx/settings.py
+--- pretalx/src/pretalx/settings.py	2018-04-04 20:20:12.000000000 +0100
++++ pretalx_patch/src/pretalx/settings.py	2018-04-04 20:22:26.000000000 +0100
+@@ -130,7 +130,7 @@
+ if db_backend == 'mysql':
+     db_opts = {
+         'charset': 'utf8mb4',
+-        'init_command': 'SET storage_engine=INNODB,character_set_connection=utf8mb4,'
++        'init_command': 'SET default_storage_engine=INNODB,character_set_connection=utf8mb4,'
+                         'collation_connection=utf8mb4_unicode_ci;'
+     }
+ else:
