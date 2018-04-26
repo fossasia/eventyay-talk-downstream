@@ -1,55 +1,41 @@
 # pretalx-docker
-docker setup for a complete [pretalx](https://github.com/pretalx/pretalx) instalation using docker
+
+This repository contains a docker-compose setup for a complete [pretalx](https://github.com/pretalx/pretalx)
+installation.
 
 Includes:
 
-* Mysql database
-* nginx 
-* Pretalx
-* Redis server for pretalx celery
+* A MySQL as database
+* Ngninx as webserver 
+* Pretalx itself
+* Redis for asynchronous tasks
 * SMTP sink, for testing purposes
-
-Requires docker-compose
 
 ## For testing:
 
-* run ./start.sh  (**only run this once, on the first run!!!**)
-* Open http://localhost/orga in the browser
-* enjoy
+* Run ``./start.sh``  (**only run this once, on the first run!**)
+* Open http://localhost/orga in your browser
+* Enjoy
 
 You can stop it with:
 
-*  docker-compose down
+*  ``docker-compose down``
 
-After initial start, run it with:
+After initial start, run it in detached mode with:
 
-* docker-compose up -d
+* ``docker-compose up -d``
 
 
 ## For production
 
-* Change conf/pretalx-password.secret;
-* Change conf/pretalx.conf to your required configuration.
- * Set the database password to the same as the previous point; 
+* Change ``conf/pretalx-password.secret``
+* Change ``conf/pretalx.conf`` to your [required configuration](https://docs.pretalx.org/en/latest/administrator/configure.html)
+ * Set the database password to the same as the previous point;
  * Set the SMTP server
  * Set the correct hostname
- 
-* Change conf/nginx/conf.d/pretalx.config 
+* Change ``conf/nginx/conf.d/pretalx.config``
  * Configure hostname
- * **Enable SSL**
-
-* Add your certificate and key to conf/ssl/cert.pem and conf/ssl/key.pem
-
-You can disable the SMTP from the docker-compose.yml file (it's just a sink)
-
-Run ./start.sh  (**only run this once, on the first run!!!**)
-
- 
-You can stop it with:
-
-*  docker-compose down
-
-After initial start, run it with:
-
-* docker-compose up -d
-
+ * **Enable SSL** by adding your certificate and key to ``conf/ssl/cert.pem`` and ``conf/ssl/key.pem``
+* You can disable the SMTP from the ``docker-compose.yml`` file (it's just a sink).
+* Run ``./start.sh``  (**only run this once, on the first run!**)
+* From now on, start up with ``docker-compose up -d`` and stop with ``docker-compose down``
