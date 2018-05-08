@@ -9,8 +9,6 @@ echo Fetching pretalx
 git submodule update --recursive --init
 echo Patching docker files
 patch -p2 < docker.diff
-echo Fixing for mysql > 5.5
-patch -p0 < mysql.diff
 echo building pretalx docker image
 docker-compose build pretalx && \
 echo Creating volume folders && \
