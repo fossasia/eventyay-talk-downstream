@@ -9,7 +9,7 @@
 +RUN pip3 install -U pip setuptools wheel typing && \
      pip3 install -e src/ && \
 -    pip3 install django-redis pylibmc mysqlclient psycopg2 && \
-+    pip3 install django-redis pylibmc mysqlclient psycopg2-binary && \
++    pip3 install django-redis pylibmc mysqlclient psycopg2-binary redis==2.10.6 && \
      pip3 install gunicorn && \
      chmod +x /usr/local/bin/pretalx
  
