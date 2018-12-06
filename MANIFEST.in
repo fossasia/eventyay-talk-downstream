@@ -1,0 +1,3 @@
+recursive-include pretalx_downstream/static *
+recursive-include pretalx_downstream/templates *
+recursive-include pretalx_downstream/locale *
