@@ -161,7 +161,7 @@ def _create_talk(*, talk, room, event):
         sub.speakers.add(user)
 
     slot, _ = TalkSlot.objects.get_or_create(
-        submission=sub, schedule=event.wip_schedule, is_visible=True
+        submission=sub, schedule=event.wip_schedule
     )
     slot.room = room
     slot.is_visible = True
