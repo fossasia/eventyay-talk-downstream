@@ -21,7 +21,7 @@ from .models import UpstreamResult
 @app.task()
 def task_refresh_upstream_schedule(event_slug):
     event = Event.objects.get(slug__iexact=event_slug)
-    url = event.settings.upstream_url
+    url = event.settings.downstream_upstream_url
     if not url:
         raise Exception(_('No upstream URL was configured.'))
 
@@ -37,12 +37,11 @@ def task_refresh_upstream_schedule(event_slug):
     last_result = event.upstream_results.order_by('timestamp').first()
     m = hashlib.sha256()
     m.update(response.content)
-    if m == last_result.checksum:
+    if last_result and m == last_result.checksum:
         event.settings.upstream_last_sync = now()
         return
 
-    tree = ET.fromstring(content)
-    root = tree.getroot()
+    root = ET.fromstring(content)
     schedule_version = root.find('version').text
     release_new_version = (
         not event.current_schedule or schedule_version != event.current_schedule.version
@@ -60,7 +59,7 @@ def process_frab(root, event, release_new_version):
     """Take an xml document root and an event, and releases a schedule with the data
     from the xml document. Copied directly from pretalx.schedule.utils.process_frab"""
 
-    changes = {}
+    changes = dict()
     for day in root.findall('day'):
         for rm in day.findall('room'):
             room, _ = Room.objects.get_or_create(event=event, name=rm.attrib['name'])
@@ -151,7 +150,7 @@ def _create_talk(*, talk, room, event):
             changes[key] = {'old': getattr(sub, key), 'new': value}
             setattr(sub, key, value)
 
-    sub.save(update_fields=changes.values())
+    sub.save()
 
     for person in talk.find('persons').findall('person'):
         user = User.objects.filter(name=person.text[:60]).first()
@@ -171,3 +170,4 @@ def _create_talk(*, talk, room, event):
     slot.save()
     if not created and changes:
         return {sub.code: changes}
+    return dict()
