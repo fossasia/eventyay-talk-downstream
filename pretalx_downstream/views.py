@@ -25,11 +25,11 @@ class UpstreamSettings(PermissionRequired, FormView):
         if action == 'refresh':
             try:
                 task_refresh_upstream_schedule(request.event.slug)
-                messages.success(
-                    request, _('Refreshing schedule …')
-                )
+                messages.success(request, _('Refreshing schedule …'))
             except Exception as e:
-                messages.error(request, _('Failure when processing remote schedule: ') + str(e))
+                messages.error(
+                    request, _('Failure when processing remote schedule: ') + str(e)
+                )
         return response
 
     def get_object(self):
