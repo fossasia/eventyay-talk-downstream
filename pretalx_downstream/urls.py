@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 from pretalx.event.models.event import SLUG_CHARS
 
 from .views import UpstreamSettings

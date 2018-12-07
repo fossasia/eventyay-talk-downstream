@@ -25,4 +25,4 @@ class UpstreamResult(models.Model):
             return None
         m = hashlib.sha256()
         m.update(self.content.encode('utf-8'))
-        return h.hexdigest()
+        return m.hexdigest()
