@@ -13,7 +13,7 @@ from pretalx.celery_app import app
 from pretalx.event.models import Event
 from pretalx.person.models import SpeakerProfile, User
 from pretalx.schedule.models import Room, TalkSlot
-from pretalx.submission.models import Submission, SubmissionType
+from pretalx.submission.models import Submission, SubmissionType, Track
 
 from .models import UpstreamResult
 
@@ -108,6 +108,16 @@ def _create_talk(*, talk, room, event):
             default_duration=duration_in_minutes,
         )
 
+    track = Track.objects.filter(
+        event=event, name=talk.find('track').text,
+    ).first()
+
+    if not track:
+        track = Track.objects.create(
+            name=talk.find('track').text or 'default',
+            event=event,
+        )
+
     optout = False
     with suppress(AttributeError):
         optout = talk.find('recording').find('optout').text == 'true'
@@ -130,6 +140,7 @@ def _create_talk(*, talk, room, event):
         event=event, code=code, defaults={'submission_type': sub_type}
     )
     sub.submission_type = sub_type
+    sub.track = track
 
     change_tracking_data = {
         'title': talk.find('title').text,
