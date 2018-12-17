@@ -11,7 +11,7 @@ from .tasks import task_refresh_upstream_schedule
 
 
 @receiver(periodic_task)
-def refresh_upstream_schedule(sender, request, **kwargs):
+def refresh_upstream_schedule(sender, request=None, **kwargs):
     interval = timedelta(minutes=sender.settings.downstream_interval or 5)
     last_pulled = sender.settings.downstream_last_sync
     if not last_pulled or now() - last_pulled > interval:
