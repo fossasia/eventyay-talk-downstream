@@ -23,7 +23,7 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
             interval = timedelta(minutes=interval)
             last_pulled = event.settings.downstream_last_sync
             if not last_pulled or now() - last_pulled > interval:
-                task_refresh_upstream_schedule.apply_async(event.slug)
+                task_refresh_upstream_schedule.apply_async(event_slug=event.slug)
 
 
 @receiver(nav_event_settings)
