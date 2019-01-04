@@ -5,8 +5,8 @@ installation.
 
 Includes:
 
-* A MySQL as database
-* Ngninx as webserver 
+* MySQL as database
+* Nginx as webserver 
 * Pretalx itself
 * Redis for asynchronous tasks
 * SMTP sink, for testing purposes
