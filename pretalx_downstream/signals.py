@@ -13,8 +13,9 @@ from .tasks import task_refresh_upstream_schedule
 
 @receiver(periodic_task)
 def refresh_upstream_schedule(sender, request=None, **kwargs):
+    _now = now()
     for event in Event.objects.all():
-        if event.settings.downstream_upstream_url:
+        if event.settings.downstream_upstream_url and event.datetime_from < _now < (event.datetime_to + timedelta(days=1)):
             interval = event.settings.downstream_interval or 5
             try:
                 interval = int(interval)
@@ -22,7 +23,7 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
                 interval = 5
             interval = timedelta(minutes=interval)
             last_pulled = event.settings.downstream_last_sync
-            if not last_pulled or now() - last_pulled > interval:
+            if not last_pulled or _now - last_pulled > interval:
                 task_refresh_upstream_schedule.apply_async(kwargs={'event_slug': event.slug})
 
 
