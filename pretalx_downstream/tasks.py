@@ -86,8 +86,39 @@ def process_frab(root, event, release_new_version):
     return changes, schedule
 
 
-def _create_talk(*, talk, room, event):
+def _create_user(person, event):
+    user = User.objects.filter(name=person.text[:60]).first()
+    if not user:
+        user = User(name=person.text, email=f'{person.text}@localhost')
+        user.save()
+        SpeakerProfile.objects.create(user=user, event=event)
+    return user
+
+
+def _get_changes(talk, optout, sub):
     changes = dict()
+    change_tracking_data = {
+        'title': talk.find('title').text,
+        'description': talk.find('description').text,
+        'abstract': talk.find('abstract').text,
+        'content_locale': talk.find('language').text or 'en',
+        'do_not_record': optout,
+    }
+    if talk.find('subtitle').text:
+        change_tracking_data['description'] = (
+            talk.find('subtitle').text
+            + '\n'
+            + (change_tracking_data['description'] or '')
+        )
+
+    for key, value in change_tracking_data.items():
+        if not getattr(sub, key) == value:
+            changes[key] = {'old': getattr(sub, key), 'new': value}
+            setattr(sub, key, value)
+    return changes
+
+
+def _create_talk(*, talk, room, event):
     date = talk.find('date').text
     start = parse(date + ' ' + talk.find('start').text)
     hours, minutes = talk.find('duration').text.split(':')
@@ -145,33 +176,11 @@ def _create_talk(*, talk, room, event):
     sub.submission_type = sub_type
     sub.track = track
 
-    change_tracking_data = {
-        'title': talk.find('title').text,
-        'description': talk.find('description').text,
-        'abstract': talk.find('abstract').text,
-        'content_locale': talk.find('language').text or 'en',
-        'do_not_record': optout,
-    }
-    if talk.find('subtitle').text:
-        change_tracking_data['description'] = (
-            talk.find('subtitle').text
-            + '\n'
-            + (change_tracking_data['description'] or '')
-        )
-
-    for key, value in change_tracking_data.items():
-        if not getattr(sub, key) == value:
-            changes[key] = {'old': getattr(sub, key), 'new': value}
-            setattr(sub, key, value)
-
+    changes = _get_changes(talk, optout, sub)
     sub.save()
 
     for person in talk.find('persons').findall('person'):
-        user = User.objects.filter(name=person.text[:60]).first()
-        if not user:
-            user = User(name=person.text, email=f'{person.text}@localhost')
-            user.save()
-            SpeakerProfile.objects.create(user=user, event=event)
+        user = _create_user(person, event)
         sub.speakers.add(user)
 
     slot, _ = TalkSlot.objects.get_or_create(
