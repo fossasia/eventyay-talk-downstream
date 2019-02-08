@@ -16,7 +16,7 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
     _now = now()
     for event in Event.objects.all():
         if event.settings.downstream_upstream_url and event.datetime_from < _now < (event.datetime_to + timedelta(days=1)):
-            interval = event.settings.downstream_interval or 5
+            interval = event.settings.downstream_interval or 15
             try:
                 interval = int(interval)
             except TypeError:
