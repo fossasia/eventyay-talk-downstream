@@ -5,18 +5,14 @@ if [ -d "volumes" ]; then
   exit 0
 fi
 echo Booting new instance of pretalx...
-echo Fetching pretalx
-git submodule update --recursive --init
-echo Patching docker files
-patch -p2 < docker.diff
-echo building pretalx docker image
+echo Building pretalx docker image
 docker-compose build pretalx && \
 echo Creating volume folders && \
 mkdir -p volumes/mysql-data && \
 mkdir -p volumes/nginx-data && \
 mkdir -p volumes/pretalx-data && \
 mkdir -p volumes/redis-data && \
-sudo chown -R 999:999 volumes && \
+chown -R 999:999 volumes && \
 MYSQL_PASSWORD=`LC_CTYPE=C tr -dc 'a-zA-Z0-9'<  /dev/urandom | fold -w 30 | head -1`
 echo Generated mysql root password: $MYSQL_PASSWORD && \
 echo "$MYSQL_PASSWORD" > conf/mysql-password.secret && \

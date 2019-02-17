@@ -6,10 +6,10 @@ services:
         hostname: pretalx_core
         container_name: pretalx_core
         build:
-          context: pretalx
+          context: .
         volumes:
-           - $PWD/conf/pretalx.cfg:/src/pretalx.cfg:ro 
-           - $PWD/volumes/pretalx-data:/data:rw
+           - ./conf/pretalx.cfg:/etc/pretalx.cfg:ro
+           - ./volumes/pretalx-data:/data:rw
            - /src/static.dist
         links:
            - db:db
@@ -24,11 +24,11 @@ services:
         container_name: pretalx_celery
         user: pretalx
         build:
-          context: pretalx
+          context: .
         volumes:
-           - $PWD/docker-celery-entrypoint.sh:/docker-celery-entrypoint.sh:ro 
-           - $PWD/conf/pretalx.cfg:/src/pretalx.cfg:ro 
-           - $PWD/volumes/pretalx-data:/data:rw
+           - ./docker-celery-entrypoint.sh:/docker-celery-entrypoint.sh:ro
+           - ./conf/pretalx.cfg:/src/pretalx.cfg:ro
+           - ./volumes/pretalx-data:/data:rw
         volumes_from:
            - pretalx:rw
         links:
@@ -50,11 +50,11 @@ services:
 # DO NOT USE WITHOUT SSL IN PRODUCTION
 #            - 443:443
         volumes:
-            - $PWD/conf/nginx/conf.d:/etc/nginx/conf.d:ro
-            - $PWD/conf/ssl/cert.pem:/cert.pem:ro
-            - $PWD/conf/ssl/key.pem:/key.pem:ro
-            - $PWD/volumes/nginx-data:/var/log/nginx:rw
-            - $PWD/volumes/pretalx-data/media/:/media:ro
+            - ./conf/nginx/conf.d:/etc/nginx/conf.d:ro
+            - ./conf/ssl/cert.pem:/cert.pem:ro
+            - ./conf/ssl/key.pem:/key.pem:ro
+            - ./volumes/nginx-data:/var/log/nginx:rw
+            - ./volumes/pretalx-data/media/:/media:ro
         links:
             - pretalx:pretalx
         volumes_from:
@@ -65,9 +65,9 @@ services:
        container_name: pretalx_mysql
        command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
        volumes:
-         - $PWD/conf/mysql-password.secret:/run/secrets/mysql-password:ro
-         - $PWD/conf/pretalx-password.secret:/run/secrets/pretalx-password:ro
-         - $PWD/volumes/mysql-data:/var/lib/mysql:rw
+         - ./conf/mysql-password.secret:/run/secrets/mysql-password:ro
+         - ./conf/pretalx-password.secret:/run/secrets/pretalx-password:ro
+         - ./volumes/mysql-data:/var/lib/mysql:rw
        environment:
          - MYSQL_DATABASE=pretalx
          - MYSQL_USER=pretalx
@@ -81,4 +81,4 @@ services:
         container_name: pretalx_redis
         image: redis
         volumes:
-          - $PWD/volumes/redis-data:/data:rw
+          - ./volumes/redis-data:/data:rw
