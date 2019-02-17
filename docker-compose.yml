@@ -75,10 +75,10 @@ services:
          - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql-password
     smtp:
         container_name: pretalx_smtp
-        image: tecnativa/smtp-sink  
-            
+        image: tecnativa/smtp-sink
+
     redis:
         container_name: pretalx_redis
-        image: redis 
+        image: redis
         volumes:
           - $PWD/volumes/redis-data:/data:rw
