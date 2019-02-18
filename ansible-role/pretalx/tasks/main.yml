@@ -1,0 +1,96 @@
+---
+- name: Ensures pretalx-config dir exists
+  become: yes
+  file:
+    path: "{{ pretalx_cfg_dir }}"
+    state: directory
+    owner: "{{ pretalx_user }}"
+    group: "{{ pretalx_group }}"
+
+- name: Adding pretalx.cfg file
+  become: yes
+  template:
+    src: ../templates/pretalx.cfg.j2
+    dest: "{{ pretalx_cfg_dir }}/pretalx.cfg"
+    owner: "{{ pretalx_user }}"
+    group: "{{ pretalx_group }}"   
+    mode: 0700
+  register: pretalx_config_change
+
+- name: Create the pretalx network
+  docker_network:
+    name: pretalx
+
+- name: Create pretalx db volume
+  docker_volume:
+    name: pretalx_db
+
+- name: Create pretalx data volume
+  docker_volume:
+    name: pretalx_data
+
+- name: Create redis container
+  docker_container:
+    name: pretalx-redis
+    image: redis:latest
+    networks:
+      - name: pretalx
+    purge_networks: yes
+    labels:
+      traefik.enable: "false"
+
+- name: Create db container
+  docker_container:
+    name: pretalx-db
+    image: mysql:5
+    volumes:
+      - pretalx_db:/var/lib/mysql
+    networks:
+      - name: pretalx
+    purge_networks: yes
+    labels:
+      traefik.enable: "false"
+    env:
+      MYSQL_DATABASE: "{{ db_name }}"
+      MYSQL_USER: "{{ db_user }}"
+      MYSQL_PASSWORD: "{{ db_pass }}"
+      MYSQL_RANDOM_ROOT_PASSWORD: "1"
+  register: pretalx_db_change
+
+- name: Wait for DB
+  wait_for: timeout=30
+  when: pretalx_db_change.changed == True 
+
+
+
+- name: Create Pretalx container
+  docker_container:
+    name: pretalx
+    image: maxrink/pretalx:docker-dev
+    pull: yes
+    restart_policy: unless-stopped
+    volumes:
+      - pretalx_data:/data
+      - "{{ pretalx_cfg_dir }}/pretalx.cfg:/etc/pretalx/pretalx.cfg"
+    networks:
+      - name: web
+      - name: pretalx
+    labels:
+      traefik.docker.network: "web"
+      traefik.enable: "true"
+    purge_networks: yes
+  register: pretalx_change
+
+- name: Setup Cronjob for pretalx
+  cron:
+    name: "pretalx cron"
+    job: "/usr/bin/docker exec pretalx pretalx cron"
+
+- name: Restart Pretalx on config pretalx_config_change
+  docker_container:
+    name: pretalx
+    restart : yes
+  when: 
+    - pretalx_config_change.changed == True 
+    - pretalx_change.changed == False
+

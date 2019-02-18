@@ -1,0 +1,44 @@
+[filesystem]
+data = /data
+media = /data/media
+logs = /data/logs
+
+[site]
+debug = {{ pretalx_debug }}
+url = https://{{ pretalx_url }}
+
+[database]
+backend = mysql
+name = {{ db_name }}
+user = {{ db_user }}
+password = {{ db_pass }}
+host = pretalx-db
+port = 3306
+
+[mail]
+from={{ pretalx_mailfrom }}
+host={{ pretalx_mailhost }}
+user={{ pretalx_mailuser }}
+password={{ pretalx_mailpass }}
+port={{ pretalx_mailport }}
+tls={{ pretalx_mailtls }}
+ssl={{ pretalx_mailssl }}
+
+
+[celery]
+backend = redis://pretalx-redis/1
+broker = redis://pretalx-redis/2
+
+[redis]
+location=redis://pretalx-redis/0
+; Remove the following line if you are unsure about your redis' security
+; to reduce impact if redis gets compromised.
+sessions=true
+
+[logging]
+email={{ pretalx_loggingmail }}
+email_level=ERROR
+
+[locale]
+language_code={{ pretalx_locale }}
+time_zone={{ pretalx_timezone }}
