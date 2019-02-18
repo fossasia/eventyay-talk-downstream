@@ -13,7 +13,7 @@ services:
     ports:
       - "3080:80"
     volumes: 
-      - ./conf/pretalx.cfg:/etc/pretalx.cfg:ro
+      - ./conf/pretalx.cfg:/etc/pretalx/pretalx.cfg:ro
       - pretalx-data:/data
 
 
