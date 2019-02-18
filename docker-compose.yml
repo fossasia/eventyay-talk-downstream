@@ -3,10 +3,15 @@ services:
   pretalx:
     image: maxrink/pretalx-devel:latest
     container_name: pretalx
+    restart: unless-stopped
     networks: 
       - pretalx
       - web
-    depends_on: db
+    depends_on: 
+      - redis
+      - db
+    ports:
+      - "3080:80"
     volumes: 
       - ./conf/pretalx.cfg:/etc/pretalx.cfg:ro
       - pretalx-data:/data
@@ -15,14 +20,21 @@ services:
   db:
     image: mysql:5
     container_name: pretalx-db
+    restart: unless-stopped
     networks: 
       - pretalx
     volumes:
       - pretalx-db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: pretalx
+      MYSQL_USER: pretalx
+      MYSQL_PASSWORD: veryunsecureplschange
+      MYSQL_RANDOM_ROOT_PASSWORD: "1"
 
   redis:
     image: redis:latest
     container_name: pretalx-redis
+    restart: unless-stopped
     networks: 
       - pretalx
     volumes: 
