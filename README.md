@@ -39,3 +39,9 @@ After initial start, run it in detached mode with:
 * You can disable the SMTP from the ``docker-compose.yml`` file (it's just a sink).
 * Run ``./start.sh``  (**only run this once, on the first run!**)
 * From now on, start up with ``docker-compose up -d`` and stop with ``docker-compose down``
+
+## Using ansible in combination with docker
+
+* add the role under ``ansible-role`` to your ansible setup.
+* fill out the varaibles listed in the ``vars/main.yml``-file
+* setup an reverse proxy to handle TLS, i recommend traefik. The containers that get rolled out are already tagged for traefik
