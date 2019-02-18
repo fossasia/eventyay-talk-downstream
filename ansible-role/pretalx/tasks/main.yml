@@ -25,6 +25,10 @@
   docker_volume:
     name: pretalx_db
 
+- name: Create pretalx redis volume
+  docker_volume:
+    name: pretalx_redis
+
 - name: Create pretalx data volume
   docker_volume:
     name: pretalx_data
@@ -33,6 +37,8 @@
   docker_container:
     name: pretalx-redis
     image: redis:latest
+    volumes:
+      - pretalx_redis:/data
     networks:
       - name: pretalx
     purge_networks: yes

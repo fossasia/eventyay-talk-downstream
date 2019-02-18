@@ -1,84 +1,40 @@
 version: '2'
-
 services:
-    pretalx:
-        image: pretalx
-        hostname: pretalx_core
-        container_name: pretalx_core
-        build:
-          context: .
-        volumes:
-           - ./conf/pretalx.cfg:/etc/pretalx.cfg:ro
-           - ./volumes/pretalx-data:/data:rw
-           - /src/static.dist
-        links:
-           - db:db
-           - redis:redis
-           - smtp:smtp
-        depends_on:
-           - db
+  pretalx:
+    image: maxrink/pretalx-devel:latest
+    container_name: pretalx
+    networks: 
+      - pretalx
+      - web
+    depends_on: db
+    volumes: 
+      - ./conf/pretalx.cfg:/etc/pretalx.cfg:ro
+      - pretalx-data:/data
 
-    pretalx_celery:
-        image: pretalx
-        hostname: pretalx_celery
-        container_name: pretalx_celery
-        user: pretalx
-        build:
-          context: .
-        volumes:
-           - ./docker-celery-entrypoint.sh:/docker-celery-entrypoint.sh:ro
-           - ./conf/pretalx.cfg:/src/pretalx.cfg:ro
-           - ./volumes/pretalx-data:/data:rw
-        volumes_from:
-           - pretalx:rw
-        links:
-           - db:db
-           - redis:redis
-           - smtp:smtp
-        depends_on:
-           - db
-           - redis
-           - pretalx
-        entrypoint: /docker-celery-entrypoint.sh
 
-    nginx:
-        image: nginx
-        hostname: nginx
-        container_name: pretalx_nginx
-        ports:
-            - 80:80
-# DO NOT USE WITHOUT SSL IN PRODUCTION
-#            - 443:443
-        volumes:
-            - ./conf/nginx/conf.d:/etc/nginx/conf.d:ro
-            - ./conf/ssl/cert.pem:/cert.pem:ro
-            - ./conf/ssl/key.pem:/key.pem:ro
-            - ./volumes/nginx-data:/var/log/nginx:rw
-            - ./volumes/pretalx-data/media/:/media:ro
-        links:
-            - pretalx:pretalx
-        volumes_from:
-            - pretalx:ro
-    db:
-       image: mysql:5
-       hostname: mysql
-       container_name: pretalx_mysql
-       command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-       volumes:
-         - ./conf/mysql-password.secret:/run/secrets/mysql-password:ro
-         - ./conf/pretalx-password.secret:/run/secrets/pretalx-password:ro
-         - ./volumes/mysql-data:/var/lib/mysql:rw
-       environment:
-         - MYSQL_DATABASE=pretalx
-         - MYSQL_USER=pretalx
-         - MYSQL_PASSWORD_FILE=/run/secrets/pretalx-password
-         - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql-password
-    smtp:
-        container_name: pretalx_smtp
-        image: tecnativa/smtp-sink
+  db:
+    image: mysql:5
+    container_name: pretalx-db
+    networks: 
+      - pretalx
+    volumes:
+      - pretalx-db:/var/lib/mysql
 
-    redis:
-        container_name: pretalx_redis
-        image: redis
-        volumes:
-          - ./volumes/redis-data:/data:rw
+  redis:
+    image: redis:latest
+    container_name: pretalx-redis
+    networks: 
+      - pretalx
+    volumes: 
+      - pretalx-redis:/data
+
+
+volumes:
+  pretalx-db:
+  pretalx-data:
+  pretalx-redis:
+
+  
+networks:
+  pretalx:
+  web:
