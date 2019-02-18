@@ -86,6 +86,38 @@
       traefik.enable: "true"
     purge_networks: yes
   register: pretalx_change
+  when: not testsetup
+
+- name: Create Pretalx container
+  docker_container:
+    name: pretalx
+    image: maxrink/pretalx:docker-dev
+    pull: yes
+    restart_policy: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - pretalx_data:/data
+      - "{{ pretalx_cfg_dir }}/pretalx.cfg:/etc/pretalx/pretalx.cfg"
+    networks:
+      - name: web
+      - name: pretalx
+    labels:
+      traefik.docker.network: "web"
+      traefik.enable: "true"
+    purge_networks: yes
+  register: pretalx_change
+  when: testsetup
+
+- name: Create SMTP-Sink
+  docker_container:
+    name: pretalx-smtp-sink
+    image: tecnativa/smtp-sink
+    networks:
+      - name: pretalx
+  when: testsetup
+
+
 
 - name: Setup Cronjob for pretalx
   cron:

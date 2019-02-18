@@ -1,19 +1,20 @@
 ---
+testsetup: True
 pretalx_user: 999
 pretalx_group: 999
 pretalx_cfg_dir: /docker-config/pretalx
 db_pass: verysecurepw
 db_user: pretalx
 db_name: pretalx
-pretalx_url: pretalx.yourdomain.com
-pretalx_debug: false
+pretalx_url: localhost
+pretalx_debug: True
 pretalx_loggingmail: pretalxlogs@yourdomain.com
 pretalx_locale: de
 pretalx_timezone: Europe/Berlin
 pretalx_mailfrom: pretalx@yourdomain.com
-pretalx_mailhost: mail.yourdomain.com
+pretalx_mailhost: pretalx-smtp-sink
 pretalx_mailuser: pretalx
 pretalx_mailpass: verysecurepw
-pretalx_mailport: 587
-pretalx_mailtls: on
+pretalx_mailport: 25
+pretalx_mailtls: off
 pretalx_mailssl: off
