@@ -41,7 +41,7 @@ if [ "$1" == "shell" ]; then
 fi
 
 if [ "$1" == "upgrade" ]; then
-    exec python3 -m pretalx updatestyles
+    exec python3 -m pretalx rebuild
 fi
 
 exec python3 -m pretalx $*
