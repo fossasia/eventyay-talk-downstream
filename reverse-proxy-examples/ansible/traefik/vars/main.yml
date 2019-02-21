@@ -1,0 +1,4 @@
+---
+user: root
+group: docker
+traefik_dir: /docker-config/traefik

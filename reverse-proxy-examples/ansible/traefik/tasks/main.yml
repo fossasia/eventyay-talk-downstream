@@ -1,0 +1,65 @@
+---
+- name: Ensures traefik dir exists
+  become: yes
+  file:
+    path: "{{ traefik_dir }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+
+
+- name: Check acme.json file exists
+  become: yes
+  stat:
+    path: "{{ traefik_dir }}/acme.json"
+  register: stat_result
+
+- name: Create acme.json file, if it doesnt exist already
+  become: yes
+  file:
+    path: "{{ traefik_dir }}/acme.json"
+    state: touch
+    mode: 0600
+  when: stat_result.stat.exists == False 
+
+- name: Adding traefik.toml file
+  become: yes
+  template:
+    src: ../templates/traefik.toml.j2
+    dest: "{{ traefik_dir }}/traefik.toml"
+    mode: 0600
+  register: traefik_config_change
+
+- name: Create the web network
+  docker_network:
+    name: web
+
+- name: Create the traefik container
+  docker_container:
+    name: traefik
+    image: traefik
+    restart_policy: unless-stopped
+    networks:
+      - name: web
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "{{ traefik_dir }}/traefik.toml:/etc/traefik/traefik.toml"
+      - "{{ traefik_dir }}/acme.json:/acme.json"
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      traefik.docker.network: "web"
+      traefik.port: "8080"
+      traefik.enable: "false"
+  register: traefik_change
+
+
+- name: Restart traefik on config change
+  docker_container:
+    name: traefik
+    restart : yes
+  when: 
+    - traefik_config_change.changed == True 
+    - traefik_change.changed == False

@@ -1,0 +1,62 @@
+debug = false
+
+logLevel = "INFO"
+
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+  minVersion = "VersionTLS12"
+  
+
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "{{ main_url }}"
+watch = true
+exposedByDefault = true
+
+[acme]
+email = "{{ acme_mail }}"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+acmeLogging = true
+
+[acme.httpChallenge]
+entryPoint = "http"
+
+
+
+
+[api]
+  # Name of the related entry point
+  #
+  # Optional
+  # Default: "traefik"
+  #
+  #entryPoint = "traefik"
+
+  # Enable Dashboard
+  #
+  # Optional
+  # Default: true
+  #
+  dashboard = true
+
+  # Enable debug mode.
+  # This will install HTTP handlers to expose Go expvars under /debug/vars and
+  # pprof profiling data under /debug/pprof/.
+  # Additionally, the log level will be set to DEBUG.
+  #
+  # Optional
+  # Default: false
+  #
+  debug = false
