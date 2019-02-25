@@ -12,6 +12,9 @@ services:
     volumes: 
       - ./conf/pretalx.cfg:/etc/pretalx/pretalx.cfg:ro
       - pretalx-data:/data
+    labels:
+      - traefik.docker.network: "pretalxdocker"
+      - traefik.enable: "true"
 
 
   db:
