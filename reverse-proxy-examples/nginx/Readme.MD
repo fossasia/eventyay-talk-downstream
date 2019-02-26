@@ -1,6 +1,6 @@
 # NGINX Config example
 
-Your config clould look like this:
+Your config could look like this:
 
 ```
 sserver {
