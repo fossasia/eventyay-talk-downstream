@@ -16,7 +16,7 @@ RUN apt-get update && \
     mkdir /data && \
     groupadd -g 999 pretalxuser && \
     useradd -r -u 999 -g pretalxuser -d /pretalx -ms /bin/bash pretalxuser && \
-    echo 'pretalxuser ALL=(ALL) NOPASSWD: /usr/bin/supervisord' >> /etc/sudoers 
+    echo 'pretalxuser ALL=(ALL) NOPASSWD: /usr/bin/supervisord' >> /etc/sudoers
 
 ENV LC_ALL=C.UTF-8
 
@@ -29,7 +29,7 @@ COPY deployment/docker/nginx.conf /etc/nginx/nginx.conf
 RUN pip3 install -U pip setuptools wheel typing && \
     pip3 install -e /pretalx/src/ && \
     pip3 install django-redis pylibmc mysqlclient psycopg2-binary redis==2.10.6 && \
-    pip3 install gunicorn 
+    pip3 install gunicorn
 
 
 RUN python3 -m pretalx makemigrations
