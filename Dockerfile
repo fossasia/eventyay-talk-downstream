@@ -39,7 +39,8 @@ RUN chmod +x /usr/local/bin/pretalx && \
     rm /etc/nginx/sites-enabled/default && \
     cd /pretalx/src && \
     rm -f pretalx.cfg && \
-    chown -R pretalxuser:pretalxuser /pretalx /data  
+    chown -R pretalxuser:pretalxuser /pretalx /data && \
+    rm -f /pretalx/src/data/.secret
 
 
 
