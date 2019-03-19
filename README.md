@@ -16,7 +16,7 @@ This repository contains a docker-compose setup as well as an [ansible](https://
 * Edit ``conf/pretalx.conf`` and fill in your own values (→ [configuration
   documentation](https://docs.pretalx.org/en/latest/administrator/configure.html))
 * Edit ``docker-compose.yml`` and remove the complete section with ``ports: - "80:80"`` from the file (if you go with
-  traefim as reverse proxy) or change the line to ``ports: - "127.0.0.1:8355:80"`` (if you use nginx). **Change the
+  traefic as reverse proxy) or change the line to ``ports: - "127.0.0.1:8355:80"`` (if you use nginx). **Change the
   database password.**
 * If you don't want to use docker volumes, create directories for the persistent data and make them read-writeable for
   the userid 999 and the groupid 999. Change ``pretalx-redis, pretalx-db and pretalx-data`` to the corresponding
