@@ -25,6 +25,10 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
             last_pulled = event.settings.downstream_last_sync
             if not last_pulled or _now - last_pulled > interval:
                 task_refresh_upstream_schedule.apply_async(kwargs={'event_slug': event.slug})
+        if event.upstream_results.count() > 3:
+            latest_three = list(event.upstream_results.order_by('-timestamp')[:3])
+            event.upstream_results.filter(timestamp__lt=latest_three[-1].timestamp).delete()
+
 
 
 @receiver(nav_event_settings)
