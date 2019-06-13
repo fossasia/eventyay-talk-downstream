@@ -9,6 +9,7 @@ from dateutil.parser import parse
 from django.db import transaction
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from django_scopes import scopes_disabled, scope
 from pretalx.celery_app import app
 from pretalx.event.models import Event
 from pretalx.person.models import SpeakerProfile, User
@@ -20,38 +21,40 @@ from .models import UpstreamResult
 
 @app.task()
 def task_refresh_upstream_schedule(event_slug):
-    event = Event.objects.get(slug__iexact=event_slug)
-    url = event.settings.downstream_upstream_url
-    if not url:
-        raise Exception(_('No upstream URL was configured.'))
+    with scopes_disabled():
+        event = Event.objects.get(slug__iexact=event_slug)
+    with scope(event=event):
+        url = event.settings.downstream_upstream_url
+        if not url:
+            raise Exception(_('No upstream URL was configured.'))
 
-    response = requests.get(url)
-    if response.status_code != 200:
-        raise Exception(
-            _('Could not retrieve schedule, received {} response.').format(
-                response.status_code
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise Exception(
+                _('Could not retrieve schedule, received {} response.').format(
+                    response.status_code
+                )
             )
+
+        content = response.content.decode()
+        last_result = event.upstream_results.order_by('timestamp').first()
+        m = hashlib.sha256()
+        m.update(response.content)
+        if last_result and m == last_result.checksum:
+            event.settings.upstream_last_sync = now()
+            return
+
+        root = ET.fromstring(content)
+        schedule_version = root.find('version').text
+        release_new_version = (
+            not event.current_schedule or schedule_version != event.current_schedule.version
         )
-
-    content = response.content.decode()
-    last_result = event.upstream_results.order_by('timestamp').first()
-    m = hashlib.sha256()
-    m.update(response.content)
-    if last_result and m == last_result.checksum:
-        event.settings.upstream_last_sync = now()
-        return
-
-    root = ET.fromstring(content)
-    schedule_version = root.find('version').text
-    release_new_version = (
-        not event.current_schedule or schedule_version != event.current_schedule.version
-    )
-    changes, schedule = process_frab(
-        root, event, release_new_version=release_new_version
-    )
-    UpstreamResult.objects.create(
-        event=event, schedule=schedule, changes=json.dumps(changes), content=content
-    )
+        changes, schedule = process_frab(
+            root, event, release_new_version=release_new_version
+        )
+        UpstreamResult.objects.create(
+            event=event, schedule=schedule, changes=json.dumps(changes), content=content
+        )
 
 
 @transaction.atomic()
