@@ -15,7 +15,9 @@ from .tasks import task_refresh_upstream_schedule
 def refresh_upstream_schedule(sender, request=None, **kwargs):
     _now = now()
     for event in Event.objects.all():
-        if event.settings.downstream_upstream_url and event.datetime_from < _now < (event.datetime_to + timedelta(days=1)):
+        if event.settings.downstream_upstream_url and event.datetime_from < _now < (
+            event.datetime_to + timedelta(days=1)
+        ):
             interval = event.settings.downstream_interval or 15
             try:
                 interval = int(interval)
@@ -24,11 +26,14 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
             interval = timedelta(minutes=interval)
             last_pulled = event.settings.downstream_last_sync
             if not last_pulled or _now - last_pulled > interval:
-                task_refresh_upstream_schedule.apply_async(kwargs={'event_slug': event.slug})
+                task_refresh_upstream_schedule.apply_async(
+                    kwargs={'event_slug': event.slug}
+                )
         if event.upstream_results.count() > 3:
             latest_three = list(event.upstream_results.order_by('-timestamp')[:3])
-            event.upstream_results.filter(timestamp__lt=latest_three[-1].timestamp).delete()
-
+            event.upstream_results.filter(
+                timestamp__lt=latest_three[-1].timestamp
+            ).delete()
 
 
 @receiver(nav_event_settings)

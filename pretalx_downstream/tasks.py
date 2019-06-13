@@ -139,15 +139,12 @@ def _create_talk(*, talk, room, event):
             default_duration=duration_in_minutes,
         )
 
-    tracks = Track.objects.filter(
-        event=event, name__icontains=talk.find('track').text,
-    )
+    tracks = Track.objects.filter(event=event, name__icontains=talk.find('track').text)
     track = [t for t in tracks if str(t.name) == talk.find('track').text]
 
     if not track:
         track = Track.objects.create(
-            name=talk.find('track').text or 'default',
-            event=event,
+            name=talk.find('track').text or 'default', event=event
         )
     else:
         track = track[0]
@@ -184,7 +181,7 @@ def _create_talk(*, talk, room, event):
         sub.speakers.add(user)
 
     slot, _ = TalkSlot.objects.get_or_create(
-            submission=sub, schedule=event.wip_schedule, defaults={'is_visible': True}
+        submission=sub, schedule=event.wip_schedule, defaults={'is_visible': True}
     )
     slot.room = room
     slot.is_visible = True

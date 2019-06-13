@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-10 14:10+0000\n"
+"POT-Creation-Date: 2019-06-02 10:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "pretalx as a downstream service"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/__init__.py:12
+#: local/pretalx-downstream/pretalx_downstream/__init__.py:13
 msgid ""
 "This plugin allows you to use pretalx passively, by letting it import "
 "another event's schedule."
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Checking interval in minutes."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/signals.py:36
+#: local/pretalx-downstream/pretalx_downstream/signals.py:45
 msgid "Upstream"
 msgstr ""
 
