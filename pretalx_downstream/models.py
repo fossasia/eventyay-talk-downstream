@@ -1,6 +1,7 @@
 import hashlib
 
 from django.db import models
+from django_scopes import ScopedManager
 
 
 class UpstreamResult(models.Model):
@@ -18,6 +19,8 @@ class UpstreamResult(models.Model):
         null=True, blank=True
     )  # contains only content changes, all regular changes will be showin in the related schedule update (if any)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = ScopedManager(event='event')
 
     @property
     def checksum(self):
