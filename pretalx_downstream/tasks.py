@@ -8,8 +8,8 @@ import requests
 from dateutil.parser import parse
 from django.db import transaction
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
-from django_scopes import scopes_disabled, scope
+from django.utils.translation import gettext_lazy as _
+from django_scopes import scope, scopes_disabled
 from pretalx.celery_app import app
 from pretalx.event.models import Event
 from pretalx.person.models import SpeakerProfile, User
@@ -26,13 +26,13 @@ def task_refresh_upstream_schedule(event_slug):
     with scope(event=event):
         url = event.settings.downstream_upstream_url
         if not url:
-            raise Exception(_('No upstream URL was configured.'))
+            raise Exception(_('The pretalx-downstream plugin is installed for {event_slug}, but no upstream URL was configured.').format(event_slug=event_slug))
 
         response = requests.get(url)
         if response.status_code != 200:
             raise Exception(
-                _('Could not retrieve schedule, received {} response.').format(
-                    response.status_code
+                _('Could not retrieve upstream schedule for {event_slug}, received {response} response.').format(
+                    event_slug=event_slug, response=response.status_code
                 )
             )
 
@@ -59,8 +59,11 @@ def task_refresh_upstream_schedule(event_slug):
 
 @transaction.atomic()
 def process_frab(root, event, release_new_version):
-    """Take an xml document root and an event, and releases a schedule with the data
-    from the xml document. Copied directly from pretalx.schedule.utils.process_frab"""
+    """Take an xml document root and an event, and releases a schedule with the
+    data from the xml document.
+
+    Copied directly from pretalx.schedule.utils.process_frab
+    """
 
     changes = dict()
     for day in root.findall('day'):
@@ -75,9 +78,9 @@ def process_frab(root, event, release_new_version):
         try:
             event.wip_schedule.freeze(schedule_version, notify_speakers=False)
             schedule = event.schedules.get(version=schedule_version)
-        except Exception:
+        except Exception as e:
             raise Exception(
-                f'Could not import "{event.name}" schedule version "{schedule_version}": failed creating schedule release.'
+                f'Could not import "{event.name}" schedule version "{schedule_version}": {e}.'
             )
 
         schedule.talks.update(is_visible=True)
