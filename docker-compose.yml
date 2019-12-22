@@ -1,7 +1,7 @@
 version: '2'
 services:
   pretalx:
-    image: maxrink/pretalx-devel:latest
+    image: pretalx/standalone:latest
     container_name: pretalx
     restart: unless-stopped
     depends_on: 
