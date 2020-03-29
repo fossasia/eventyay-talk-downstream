@@ -1,4 +1,4 @@
-from datetime import timedelta
+import datetime as dt
 
 from django.dispatch import receiver
 from django.urls import reverse
@@ -16,14 +16,14 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
     _now = now()
     for event in Event.objects.all():
         if event.settings.downstream_upstream_url and event.datetime_from < _now < (
-            event.datetime_to + timedelta(days=1)
+            event.datetime_to + dt.timedelta(days=1)
         ):
             interval = event.settings.downstream_interval or 15
             try:
                 interval = int(interval)
             except TypeError:
                 interval = 5
-            interval = timedelta(minutes=interval)
+            interval = dt.timedelta(minutes=interval)
             last_pulled = event.settings.downstream_last_sync
             if not last_pulled or _now - last_pulled > interval:
                 task_refresh_upstream_schedule.apply_async(

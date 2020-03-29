@@ -1,8 +1,8 @@
+import datetime as dt
 import hashlib
 import json
 import xml.etree.ElementTree as ET
 from contextlib import suppress
-from datetime import timedelta
 
 import requests
 from dateutil.parser import parse
@@ -128,7 +128,7 @@ def _create_talk(*, talk, room, event):
     date = talk.find('date').text
     start = parse(date + ' ' + talk.find('start').text)
     hours, minutes = talk.find('duration').text.split(':')
-    duration = timedelta(hours=int(hours), minutes=int(minutes))
+    duration = dt.timedelta(hours=int(hours), minutes=int(minutes))
     duration_in_minutes = duration.total_seconds() / 60
     try:
         end = parse(date + ' ' + talk.find('end').text)
