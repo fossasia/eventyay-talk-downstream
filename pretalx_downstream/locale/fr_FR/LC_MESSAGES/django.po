@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-25 01:12+0000\n"
+"POT-Creation-Date: 2020-03-29 23:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,11 +44,17 @@ msgid "Upstream"
 msgstr ""
 
 #: local/pretalx-downstream/pretalx_downstream/tasks.py:29
-msgid "No upstream URL was configured."
+#, python-brace-format
+msgid ""
+"The pretalx-downstream plugin is installed for {event_slug}, but no upstream "
+"URL was configured."
 msgstr ""
 
 #: local/pretalx-downstream/pretalx_downstream/tasks.py:34
-msgid "Could not retrieve schedule, received {} response."
+#, python-brace-format
+msgid ""
+"Could not retrieve upstream schedule for {event_slug}, received {response} "
+"response."
 msgstr ""
 
 #: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:7
