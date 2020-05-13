@@ -26,8 +26,8 @@ This repository contains a docker-compose setup as well as an [ansible](https://
 * Configure a reverse-proxy to handle TLS. Pretalx listens on port 80 in the ``pretalxdocker`` network. I recommend to
   go with traefik for its ease of setup, docker integration and [LetsEncrypt
   support](https://docs.traefik.io/user-guide/docker-and-lets-encrypt/). An example to copy into the normal compose file
-  is located at ``reverse-proxy-eamples/docker-compose``. You can also find a few words on an nginx configuration at
-  ``reverse-proxy-eamples/nginx``
+  is located at ``reverse-proxy-examples/docker-compose``. You can also find a few words on an nginx configuration at
+  ``reverse-proxy-examples/nginx``
 * Run ``docker-compose up -d ``. After a few minutes the setup should be accessible under http://yourdomain.com/orga
 * Set up a user and an organizer by running ``docker exec -ti pretalx pretalx init``.
 
@@ -49,6 +49,6 @@ This repository contains a docker-compose setup as well as an [ansible](https://
 * Add the role at ``ansible-role`` to your ansible setup.
 * Fill in the variables listed in the ``vars/main.yml`` file. **Make sure to set testing to false!**
 * Set up a reverse proxy to handle TLS. traefik is recommended. The containers that get rolled out are already tagged
-  for traefik. An example role for traefik is included at ``reverse-proxy-eamples/ansible/traefik``.
+  for traefik. An example role for traefik is included at ``reverse-proxy-examples/ansible/traefik``.
 * Roll out the role. After a few minutes pretalx should be reachable at the configured domain.
 * Set up a user and an organizer by running ``docker exec -ti pretalx pretalx init`` .
