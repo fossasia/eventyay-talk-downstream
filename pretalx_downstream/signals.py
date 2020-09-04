@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+
 from pretalx.common.signals import periodic_task
 from pretalx.event.models import Event
 from pretalx.orga.signals import nav_event_settings

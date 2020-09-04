@@ -1,8 +1,8 @@
 import datetime as dt
 import hashlib
 import json
-import xml.etree.ElementTree as ET
 from contextlib import suppress
+from xml.etree import ElementTree as ET
 
 import requests
 from dateutil.parser import parse
@@ -10,6 +10,7 @@ from django.db import transaction
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django_scopes import scope, scopes_disabled
+
 from pretalx.celery_app import app
 from pretalx.event.models import Event
 from pretalx.person.models import SpeakerProfile, User
