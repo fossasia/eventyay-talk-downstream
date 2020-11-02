@@ -28,6 +28,8 @@ services:
       MYSQL_USER: pretalx
       MYSQL_PASSWORD: veryunsecureplschange
       MYSQL_RANDOM_ROOT_PASSWORD: "1"
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
 
   redis:
     image: redis:latest
