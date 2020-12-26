@@ -98,9 +98,9 @@ def process_frab(root, event, release_new_version):
     return changes, schedule
 
 
-def _create_user(person, event):
+def _create_user(name, event):
     user, _ = User.objects.get_or_create(
-        email=f"{person.text}@localhost".lower(), defaults={"name": person.text}
+        email=f"{name}@localhost".lower(), defaults={"name": name}
     )
     SpeakerProfile.objects.create(user=user, event=event)
     return user
@@ -188,8 +188,9 @@ def _create_talk(*, talk, room, event):
     sub.save()
 
     for person in talk.find("persons").findall("person"):
-        user = _create_user(person, event)
-        sub.speakers.add(user)
+        if person.text.strip():
+            user = _create_user(person.text.strip(), event)
+            sub.speakers.add(user)
 
     slot, _ = TalkSlot.objects.get_or_create(
         submission=sub, schedule=event.wip_schedule, defaults={"is_visible": True}
