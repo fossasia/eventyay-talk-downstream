@@ -10,8 +10,8 @@ from .tasks import task_refresh_upstream_schedule
 
 class UpstreamSettings(PermissionRequired, FormView):
     form_class = UpstreamSettingsForm
-    permission_required = 'orga.change_settings'
-    template_name = 'pretalx_downstream/settings.html'
+    permission_required = "orga.change_settings"
+    template_name = "pretalx_downstream/settings.html"
 
     def get_success_url(self):
         return self.request.path
@@ -22,14 +22,14 @@ class UpstreamSettings(PermissionRequired, FormView):
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
-        action = request.POST.get('action', 'save')
-        if action == 'refresh':
+        action = request.POST.get("action", "save")
+        if action == "refresh":
             try:
                 task_refresh_upstream_schedule(request.event.slug)
-                messages.success(request, _('Refreshing schedule …'))
+                messages.success(request, _("Refreshing schedule …"))
             except Exception as e:
                 messages.error(
-                    request, _('Failure when processing remote schedule: ') + str(e)
+                    request, _("Failure when processing remote schedule: ") + str(e)
                 )
         return response
 
@@ -38,4 +38,4 @@ class UpstreamSettings(PermissionRequired, FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        return {'obj': self.request.event, 'attribute_name': 'settings', **kwargs}
+        return {"obj": self.request.event, "attribute_name": "settings", **kwargs}

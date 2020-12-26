@@ -9,20 +9,43 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('schedule', '0011_auto_20180205_1127'),
-        ('event', '0017_auto_20180922_0511'),
+        ("schedule", "0011_auto_20180205_1127"),
+        ("event", "0017_auto_20180922_0511"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='UpstreamResult',
+            name="UpstreamResult",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.TextField(blank=True, null=True)),
-                ('changes', models.TextField(blank=True, null=True)),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='upstream_results', to='event.Event')),
-                ('schedule', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='upstream_results', to='schedule.Schedule')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("content", models.TextField(blank=True, null=True)),
+                ("changes", models.TextField(blank=True, null=True)),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="upstream_results",
+                        to="event.Event",
+                    ),
+                ),
+                (
+                    "schedule",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="upstream_results",
+                        to="schedule.Schedule",
+                    ),
+                ),
             ],
         ),
     ]

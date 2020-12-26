@@ -6,8 +6,8 @@ from .views import UpstreamSettings
 
 urlpatterns = [
     re_path(
-        fr'^orga/event/(?P<event>[{SLUG_CHARS}]+)/settings/p/upstream/$',
+        fr"^orga/event/(?P<event>[{SLUG_CHARS}]+)/settings/p/upstream/$",
         UpstreamSettings.as_view(),
-        name='settings',
+        name="settings",
     )
 ]

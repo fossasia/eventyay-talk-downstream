@@ -28,10 +28,10 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
             last_pulled = event.settings.downstream_last_sync
             if not last_pulled or _now - last_pulled > interval:
                 task_refresh_upstream_schedule.apply_async(
-                    kwargs={'event_slug': event.slug}
+                    kwargs={"event_slug": event.slug}
                 )
         if event.upstream_results.count() > 3:
-            latest_three = list(event.upstream_results.order_by('-timestamp')[:3])
+            latest_three = list(event.upstream_results.order_by("-timestamp")[:3])
             event.upstream_results.filter(
                 timestamp__lt=latest_three[-1].timestamp
             ).delete()
@@ -39,16 +39,16 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
 
 @receiver(nav_event_settings)
 def register_upstream_settings(sender, request, **kwargs):
-    if not request.user.has_perm('orga.change_settings', request.event):
+    if not request.user.has_perm("orga.change_settings", request.event):
         return []
     return [
         {
-            'label': _('Upstream'),
-            'url': reverse(
-                'plugins:pretalx_downstream:settings',
-                kwargs={'event': request.event.slug},
+            "label": _("Upstream"),
+            "url": reverse(
+                "plugins:pretalx_downstream:settings",
+                kwargs={"event": request.event.slug},
             ),
-            'active': request.resolver_match.url_name
-            == 'plugins:pretalx_downstream:settings',
+            "active": request.resolver_match.url_name
+            == "plugins:pretalx_downstream:settings",
         }
     ]
