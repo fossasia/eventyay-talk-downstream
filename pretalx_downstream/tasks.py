@@ -94,7 +94,7 @@ def process_frab(root, event, release_new_version):
 
 
 def _create_user(person, event):
-    user = User.objects.filter(name=person.text[:60]).first()
+    user = User.objects.filter(email=f"{person.text}@localhost").first()
     if not user:
         user = User(name=person.text, email=f'{person.text}@localhost')
         user.save()
