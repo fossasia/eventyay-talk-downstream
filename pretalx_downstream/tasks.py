@@ -27,18 +27,22 @@ def task_refresh_upstream_schedule(event_slug):
     with scope(event=event):
         url = event.settings.downstream_upstream_url
         if not url:
-            raise Exception(_('The pretalx-downstream plugin is installed for {event_slug}, but no upstream URL was configured.').format(event_slug=event_slug))
+            raise Exception(
+                _(
+                    "The pretalx-downstream plugin is installed for {event_slug}, but no upstream URL was configured."
+                ).format(event_slug=event_slug)
+            )
 
         response = requests.get(url)
         if response.status_code != 200:
             raise Exception(
-                _('Could not retrieve upstream schedule for {event_slug}, received {response} response.').format(
-                    event_slug=event_slug, response=response.status_code
-                )
+                _(
+                    "Could not retrieve upstream schedule for {event_slug}, received {response} response."
+                ).format(event_slug=event_slug, response=response.status_code)
             )
 
         content = response.content.decode()
-        last_result = event.upstream_results.order_by('timestamp').first()
+        last_result = event.upstream_results.order_by("timestamp").first()
         m = hashlib.sha256()
         m.update(response.content)
         if last_result and m == last_result.checksum:
@@ -46,9 +50,10 @@ def task_refresh_upstream_schedule(event_slug):
             return
 
         root = ET.fromstring(content)
-        schedule_version = root.find('version').text
+        schedule_version = root.find("version").text
         release_new_version = (
-            not event.current_schedule or schedule_version != event.current_schedule.version
+            not event.current_schedule
+            or schedule_version != event.current_schedule.version
         )
         changes, schedule = process_frab(
             root, event, release_new_version=release_new_version
@@ -67,15 +72,15 @@ def process_frab(root, event, release_new_version):
     """
 
     changes = dict()
-    for day in root.findall('day'):
-        for rm in day.findall('room'):
-            room, _ = Room.objects.get_or_create(event=event, name=rm.attrib['name'])
-            for talk in rm.findall('event'):
+    for day in root.findall("day"):
+        for rm in day.findall("room"):
+            room, _ = Room.objects.get_or_create(event=event, name=rm.attrib["name"])
+            for talk in rm.findall("event"):
                 changes.update(_create_talk(talk=talk, room=room, event=event))
 
     schedule = None
     if release_new_version:
-        schedule_version = root.find('version').text
+        schedule_version = root.find("version").text
         try:
             event.wip_schedule.freeze(schedule_version, notify_speakers=False)
             schedule = event.schedules.get(version=schedule_version)
@@ -85,8 +90,8 @@ def process_frab(root, event, release_new_version):
             )
 
         schedule.talks.update(is_visible=True)
-        start = schedule.talks.order_by('start').first().start
-        end = schedule.talks.order_by('-end').first().end
+        start = schedule.talks.order_by("start").first().start
+        end = schedule.talks.order_by("-end").first().end
         event.date_from = start.date()
         event.date_to = end.date()
         event.save()
@@ -94,88 +99,87 @@ def process_frab(root, event, release_new_version):
 
 
 def _create_user(person, event):
-    user = User.objects.filter(email=f"{person.text}@localhost").first()
-    if not user:
-        user = User(name=person.text, email=f'{person.text}@localhost')
-        user.save()
-        SpeakerProfile.objects.create(user=user, event=event)
+    user, _ = User.objects.get_or_create(
+        email=f"{person.text}@localhost".lower(), defaults={"name": person.text}
+    )
+    SpeakerProfile.objects.create(user=user, event=event)
     return user
 
 
 def _get_changes(talk, optout, sub):
     changes = dict()
     change_tracking_data = {
-        'title': talk.find('title').text,
-        'description': talk.find('description').text,
-        'abstract': talk.find('abstract').text,
-        'content_locale': talk.find('language').text or 'en',
-        'do_not_record': optout,
+        "title": talk.find("title").text,
+        "description": talk.find("description").text,
+        "abstract": talk.find("abstract").text,
+        "content_locale": talk.find("language").text or "en",
+        "do_not_record": optout,
     }
-    if talk.find('subtitle').text:
-        change_tracking_data['description'] = (
-            talk.find('subtitle').text
-            + '\n'
-            + (change_tracking_data['description'] or '')
+    if talk.find("subtitle").text:
+        change_tracking_data["description"] = (
+            talk.find("subtitle").text
+            + "\n"
+            + (change_tracking_data["description"] or "")
         )
 
     for key, value in change_tracking_data.items():
         if not getattr(sub, key) == value:
-            changes[key] = {'old': getattr(sub, key), 'new': value}
+            changes[key] = {"old": getattr(sub, key), "new": value}
             setattr(sub, key, value)
     return changes
 
 
 def _create_talk(*, talk, room, event):
-    date = talk.find('date').text
-    start = parse(date + ' ' + talk.find('start').text)
-    hours, minutes = talk.find('duration').text.split(':')
+    date = talk.find("date").text
+    start = parse(date + " " + talk.find("start").text)
+    hours, minutes = talk.find("duration").text.split(":")
     duration = dt.timedelta(hours=int(hours), minutes=int(minutes))
     duration_in_minutes = duration.total_seconds() / 60
     try:
-        end = parse(date + ' ' + talk.find('end').text)
+        end = parse(date + " " + talk.find("end").text)
     except AttributeError:
         end = start + duration
     sub_type = SubmissionType.objects.filter(
-        event=event, name=talk.find('type').text, default_duration=duration_in_minutes
+        event=event, name=talk.find("type").text, default_duration=duration_in_minutes
     ).first()
 
     if not sub_type:
         sub_type = SubmissionType.objects.create(
-            name=talk.find('type').text or 'default',
+            name=talk.find("type").text or "default",
             event=event,
             default_duration=duration_in_minutes,
         )
 
-    tracks = Track.objects.filter(event=event, name__icontains=talk.find('track').text)
-    track = [t for t in tracks if str(t.name) == talk.find('track').text]
+    tracks = Track.objects.filter(event=event, name__icontains=talk.find("track").text)
+    track = [t for t in tracks if str(t.name) == talk.find("track").text]
 
     if not track:
         track = Track.objects.create(
-            name=talk.find('track').text or 'default', event=event
+            name=talk.find("track").text or "default", event=event
         )
     else:
         track = track[0]
 
     optout = False
     with suppress(AttributeError):
-        optout = talk.find('recording').find('optout').text == 'true'
+        optout = talk.find("recording").find("optout").text == "true"
 
     code = None
     if (
-        Submission.objects.filter(code__iexact=talk.attrib['id'], event=event).exists()
-        or not Submission.objects.filter(code__iexact=talk.attrib['id']).exists()
+        Submission.objects.filter(code__iexact=talk.attrib["id"], event=event).exists()
+        or not Submission.objects.filter(code__iexact=talk.attrib["id"]).exists()
     ):
-        code = talk.attrib['id']
+        code = talk.attrib["id"]
     elif (
         Submission.objects.filter(
-            code__iexact=talk.attrib['guid'][:16], event=event
+            code__iexact=talk.attrib["guid"][:16], event=event
         ).exists()
-        or not Submission.objects.filter(code__iexact=talk.attrib['guid'][:16]).exists()
+        or not Submission.objects.filter(code__iexact=talk.attrib["guid"][:16]).exists()
     ):
-        code = talk.attrib['guid'][:16]
+        code = talk.attrib["guid"][:16]
 
     sub, created = Submission.objects.get_or_create(
-        event=event, code=code, defaults={'submission_type': sub_type}
+        event=event, code=code, defaults={"submission_type": sub_type}
     )
     sub.submission_type = sub_type
     sub.track = track
@@ -183,12 +187,12 @@ def _create_talk(*, talk, room, event):
     changes = _get_changes(talk, optout, sub)
     sub.save()
 
-    for person in talk.find('persons').findall('person'):
+    for person in talk.find("persons").findall("person"):
         user = _create_user(person, event)
         sub.speakers.add(user)
 
     slot, _ = TalkSlot.objects.get_or_create(
-        submission=sub, schedule=event.wip_schedule, defaults={'is_visible': True}
+        submission=sub, schedule=event.wip_schedule, defaults={"is_visible": True}
     )
     slot.room = room
     slot.is_visible = True
