@@ -100,7 +100,7 @@ def process_frab(root, event, release_new_version):
 
 def _create_user(name, event):
     user, _ = User.objects.get_or_create(
-        email=f"{name}@localhost".lower(), defaults={"name": name}
+        email=f"{name[:110]}@localhost".lower(), defaults={"name": name[:120]}
     )
     SpeakerProfile.objects.create(user=user, event=event)
     return user
@@ -152,7 +152,9 @@ def _create_talk(*, talk, room, event):
 
     track = None
     if talk.find("track").text:
-        tracks = Track.objects.filter(event=event, name__icontains=talk.find("track").text)
+        tracks = Track.objects.filter(
+            event=event, name__icontains=talk.find("track").text
+        )
         track = [t for t in tracks if str(t.name) == talk.find("track").text]
 
     if track:
