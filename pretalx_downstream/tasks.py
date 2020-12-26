@@ -150,15 +150,17 @@ def _create_talk(*, talk, room, event):
             default_duration=duration_in_minutes,
         )
 
-    tracks = Track.objects.filter(event=event, name__icontains=talk.find("track").text)
-    track = [t for t in tracks if str(t.name) == talk.find("track").text]
+    track = None
+    if talk.find("track").text:
+        tracks = Track.objects.filter(event=event, name__icontains=talk.find("track").text)
+        track = [t for t in tracks if str(t.name) == talk.find("track").text]
 
-    if not track:
+    if track:
+        track = track[0]
+    else:
         track = Track.objects.create(
             name=talk.find("track").text or "default", event=event
         )
-    else:
-        track = track[0]
 
     optout = False
     with suppress(AttributeError):
