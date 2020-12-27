@@ -191,10 +191,12 @@ def _create_talk(*, talk, room, event):
     changes = _get_changes(talk, optout, sub)
     sub.save()
 
-    for person in talk.find("persons").findall("person"):
-        if person.text.strip():
-            user = _create_user(person.text.strip(), event)
-            sub.speakers.add(user)
+    persons = talk.find("persons")
+    if persons:
+        for person in persons.findall("person"):
+            if person.text.strip():
+                user = _create_user(person.text.strip(), event)
+                sub.speakers.add(user)
 
     slot, _ = TalkSlot.objects.get_or_create(
         submission=sub, schedule=event.wip_schedule, defaults={"is_visible": True}
