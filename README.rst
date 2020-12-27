@@ -1,5 +1,5 @@
 pretalx as a downstream service
-==========================
+===============================
 
 This is a plugin for `pretalx`_. 
 
