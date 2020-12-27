@@ -24,7 +24,7 @@ cmdclass = {"build": CustomBuild}
 
 setup(
     name="pretalx-downstream",
-    version="0.0.0",
+    version="0.9.0",
     description="This plugin allows you to use pretalx passively, by letting it import another event's schedule.",
     long_description=long_description,
     url="https://github.com/pretalx/pretalx-downstream",
