@@ -30,6 +30,7 @@ This repository contains a docker-compose setup as well as an [ansible](https://
   ``reverse-proxy-examples/nginx``
 * Run ``docker-compose up -d ``. After a few minutes the setup should be accessible under http://yourdomain.com/orga
 * Set up a user and an organizer by running ``docker exec -ti pretalx pretalx init``.
+* Set up a cronjob for periodic tasks like this ``15,45 * * * * docker exec pretalx-app pretalx runperiodic``
 
 
 ## Installation with ansible
