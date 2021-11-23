@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   pretalx:
     image: pretalx/standalone:latest
@@ -16,9 +16,8 @@ services:
        traefik.docker.network: "pretalxdocker"
        traefik.enable: "true"
 
-
   db:
-    image: mysql:5
+    image: mysql:latest
     container_name: pretalx-db
     restart: unless-stopped
     volumes:
@@ -30,7 +29,6 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "1"
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
-
   redis:
     image: redis:latest
     container_name: pretalx-redis
@@ -38,10 +36,8 @@ services:
     volumes: 
       - pretalx-redis:/data
 
-
 volumes:
   pretalx-db:
   pretalx-data:
   pretalx-redis:
 
-  
