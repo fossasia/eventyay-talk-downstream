@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django_scopes import scope
-
 from pretalx.common.signals import periodic_task
 from pretalx.event.models import Event
 from pretalx.orga.signals import nav_event_settings
@@ -18,8 +17,11 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
     _now = now()
     for event in Event.objects.all():
         with scope(event=event):
-            if event.settings.downstream_upstream_url and event.datetime_from < _now < (
-                event.datetime_to + dt.timedelta(days=1)
+            if (
+                event.settings.downstream_upstream_url
+                and event.datetime_from
+                < _now
+                < (event.datetime_to + dt.timedelta(days=1))
             ):
                 interval = event.settings.downstream_interval or 15
                 try:
