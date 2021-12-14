@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-23 23:43+0000\n"
+"POT-Creation-Date: 2021-10-26 13:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: local/pretalx-downstream/pretalx_downstream/__init__.py:10
+#: local/pretalx-downstream/pretalx_downstream/apps.py:10
 msgid "pretalx as a downstream service"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/__init__.py:13
+#: local/pretalx-downstream/pretalx_downstream/apps.py:13
 msgid ""
 "This plugin allows you to use pretalx passively, by letting it import "
 "another event's schedule."
@@ -40,18 +40,18 @@ msgstr ""
 msgid "Checking interval in minutes."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/signals.py:46
+#: local/pretalx-downstream/pretalx_downstream/signals.py:48
 msgid "Upstream"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/tasks.py:30
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:32
 #, python-brace-format
 msgid ""
 "The pretalx-downstream plugin is installed for {event_slug}, but no upstream "
 "URL was configured."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/tasks.py:35
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:40
 #, python-brace-format
 msgid ""
 "Could not retrieve upstream schedule for {event_slug}, received {response} "
