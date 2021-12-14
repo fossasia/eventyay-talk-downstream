@@ -102,7 +102,7 @@ def _create_user(name, event):
     user, _ = User.objects.get_or_create(
         email=f"{name[:110]}@localhost".lower(), defaults={"name": name[:120]}
     )
-    SpeakerProfile.objects.create(user=user, event=event)
+    SpeakerProfile.objects.get_or_create(user=user, event=event)
     return user
 
 
