@@ -49,7 +49,7 @@ def task_refresh_upstream_schedule(event_slug):
             return
 
         root = ET.fromstring(content)
-        schedule_version = root.find("version").text
+        schedule_version = root.find("version").text.split(";")[0]
         release_new_version = (
             not event.current_schedule
             or schedule_version != event.current_schedule.version
@@ -79,7 +79,7 @@ def process_frab(root, event, release_new_version):
 
     schedule = None
     if release_new_version:
-        schedule_version = root.find("version").text
+        schedule_version = root.find("version").text.split(";")[0]
         try:
             event.wip_schedule.freeze(schedule_version, notify_speakers=False)
             schedule = event.schedules.get(version=schedule_version)
