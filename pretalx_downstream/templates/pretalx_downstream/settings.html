@@ -8,6 +8,12 @@
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form layout='event' %}
+{% if request.event.settings.upstream_last_sync %}
+        <p>
+            <!-- FIXME format this correctly -->
+            Last automatic sync: {{ request.event.settings.upstream_last_sync }}
+        </p>
+{% endif %}
         <div class="submit-group panel">
             <span></span>
             <span class="d-flex flex-row-reverse">
