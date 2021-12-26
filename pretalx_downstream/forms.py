@@ -22,7 +22,7 @@ class UpstreamSettingsForm(HierarkeyForm):
         widget=RadioSelect,
     )
     downstream_discard_after = CharField(
-        label=_("Discard everything after"),
+        label=_("Discard version name after"),
         help_text=_(
             "Everything after the first occurence of the entered string "
             "in schedule version will be discarded. Leave empty if you "
