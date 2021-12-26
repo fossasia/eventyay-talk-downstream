@@ -28,8 +28,8 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
                 except TypeError:
                     interval = 5
                 interval = dt.timedelta(minutes=interval)
-                last_pulled = event.settings.downstream_last_sync
-                if not last_pulled or _now - last_pulled > interval:
+                last_pulled = event.settings.upstream_last_sync
+                if not last_pulled or _now - dt.datetime.strptime(last_pulled, '%Y-%m-%dT%H:%M:%S.%f%z') > interval:
                     task_refresh_upstream_schedule.apply_async(
                         kwargs={"event_slug": event.slug}
                     )

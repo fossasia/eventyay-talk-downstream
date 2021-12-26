@@ -69,6 +69,7 @@ def task_refresh_upstream_schedule(event_slug):
         UpstreamResult.objects.create(
             event=event, schedule=schedule, changes=json.dumps(changes), content=content
         )
+        event.settings.upstream_last_sync = now()
         logger.info(f'refreshed schedule of {event.slug}')
 
 
