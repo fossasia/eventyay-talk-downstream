@@ -19,8 +19,7 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
         with scope(event=event):
             if (
                 event.settings.downstream_upstream_url
-                and event.datetime_from
-                < _now
+                and _now
                 < (event.datetime_to + dt.timedelta(days=1))
             ):
                 interval = event.settings.downstream_interval or 15
