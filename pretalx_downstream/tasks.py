@@ -48,16 +48,26 @@ def task_refresh_upstream_schedule(event_slug):
         last_result = event.upstream_results.order_by("timestamp").first()
         m = hashlib.sha256()
         m.update(response.content)
+        current_result = m.hexdigest()
+
         if last_result:
             logger.debug(f"last known checksum: {last_result.checksum}")
-            logger.debug(f"checksum now: {m}")
+            logger.debug(f"checksum now: {current_result}")
 
-            if m == last_result.checksum:
+            if current_result == last_result.checksum:
                 event.settings.upstream_last_sync = now()
                 return
 
         root = ET.fromstring(content)
-        schedule_version = root.find("version").text.split(";")[0]
+        schedule_version = root.find("version").text
+
+        if event.settings.downstream_discard_after:
+            schedule_version = schedule_version.split(
+                event.settings.downstream_discard_after
+            )[0]
+
+        logger.debug(f"Found schedule version '{schedule_version}'")
+
         release_new_version = (
             not event.current_schedule
             or schedule_version != event.current_schedule.version
@@ -90,7 +100,13 @@ def process_frab(root, event, release_new_version):
 
     schedule = None
     if release_new_version:
-        schedule_version = root.find("version").text.split(";")[0]
+        schedule_version = root.find("version").text
+
+        if event.settings.downstream_discard_after:
+            schedule_version = schedule_version.split(
+                event.settings.downstream_discard_after
+            )[0]
+
         try:
             event.wip_schedule.freeze(schedule_version, notify_speakers=False)
             schedule = event.schedules.get(version=schedule_version)
