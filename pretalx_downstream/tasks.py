@@ -183,12 +183,13 @@ def _create_talk(*, talk, room, event):
         )
         track = [t for t in tracks if str(t.name) == talk.find("track").text]
 
-    if track:
-        track = track[0]
-    else:
-        track = Track.objects.create(
-            name=talk.find("track").text or "default", event=event
-        )
+        if track:
+            track = track[0]
+        else:
+            track = Track.objects.create(
+                name=talk.find("track").text, event=event
+            )
+
 
     optout = False
     with suppress(AttributeError):
@@ -212,7 +213,8 @@ def _create_talk(*, talk, room, event):
         event=event, code=code, defaults={"submission_type": sub_type}
     )
     sub.submission_type = sub_type
-    sub.track = track
+    if track:
+        sub.track = track
 
     changes = _get_changes(talk, optout, sub)
     sub.save()
