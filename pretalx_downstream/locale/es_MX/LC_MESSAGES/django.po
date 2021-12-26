@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-26 13:05+0000\n"
+"POT-Creation-Date: 2021-12-24 20:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,18 +40,18 @@ msgstr ""
 msgid "Checking interval in minutes."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/signals.py:48
+#: local/pretalx-downstream/pretalx_downstream/signals.py:50
 msgid "Upstream"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/tasks.py:32
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:31
 #, python-brace-format
 msgid ""
 "The pretalx-downstream plugin is installed for {event_slug}, but no upstream "
 "URL was configured."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/tasks.py:40
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:39
 #, python-brace-format
 msgid ""
 "Could not retrieve upstream schedule for {event_slug}, received {response} "
@@ -70,10 +70,10 @@ msgstr ""
 msgid "Check for new talks"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/views.py:29
+#: local/pretalx-downstream/pretalx_downstream/views.py:28
 msgid "Refreshing schedule …"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/views.py:32
+#: local/pretalx-downstream/pretalx_downstream/views.py:31
 msgid "Failure when processing remote schedule: "
 msgstr ""
