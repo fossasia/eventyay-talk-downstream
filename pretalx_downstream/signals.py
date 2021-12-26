@@ -17,10 +17,8 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
     _now = now()
     for event in Event.objects.all():
         with scope(event=event):
-            if (
-                event.settings.downstream_upstream_url
-                and _now
-                < (event.datetime_to + dt.timedelta(days=1))
+            if event.settings.downstream_upstream_url and _now < (
+                event.datetime_to + dt.timedelta(days=1)
             ):
                 interval = event.settings.downstream_interval or 15
                 try:
@@ -29,7 +27,12 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
                     interval = 5
                 interval = dt.timedelta(minutes=interval)
                 last_pulled = event.settings.upstream_last_sync
-                if not last_pulled or _now - dt.datetime.strptime(last_pulled, '%Y-%m-%dT%H:%M:%S.%f%z') > interval:
+                if (
+                    not last_pulled
+                    or _now
+                    - dt.datetime.strptime(last_pulled, "%Y-%m-%dT%H:%M:%S.%f%z")
+                    > interval
+                ):
                     task_refresh_upstream_schedule.apply_async(
                         kwargs={"event_slug": event.slug}
                     )

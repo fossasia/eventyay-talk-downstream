@@ -19,7 +19,7 @@ from pretalx.submission.models import Submission, SubmissionType, Track
 
 from .models import UpstreamResult
 
-logger = getLogger('pretalx_downstream')
+logger = getLogger("pretalx_downstream")
 
 
 @app.task()
@@ -27,7 +27,7 @@ def task_refresh_upstream_schedule(event_slug):
     with scopes_disabled():
         event = Event.objects.get(slug__iexact=event_slug)
     with scope(event=event):
-        logger.info(f'processing {event.slug}')
+        logger.info(f"processing {event.slug}")
         url = event.settings.downstream_upstream_url
         if not url:
             raise Exception(
@@ -49,8 +49,8 @@ def task_refresh_upstream_schedule(event_slug):
         m = hashlib.sha256()
         m.update(response.content)
         if last_result:
-            logger.debug(f'last known checksum: {last_result.checksum}')
-            logger.debug(f'checksum now: {m}')
+            logger.debug(f"last known checksum: {last_result.checksum}")
+            logger.debug(f"checksum now: {m}")
 
             if m == last_result.checksum:
                 event.settings.upstream_last_sync = now()
@@ -62,7 +62,7 @@ def task_refresh_upstream_schedule(event_slug):
             not event.current_schedule
             or schedule_version != event.current_schedule.version
         )
-        logger.debug(f'release_new_version={release_new_version}')
+        logger.debug(f"release_new_version={release_new_version}")
         changes, schedule = process_frab(
             root, event, release_new_version=release_new_version
         )
@@ -70,7 +70,7 @@ def task_refresh_upstream_schedule(event_slug):
             event=event, schedule=schedule, changes=json.dumps(changes), content=content
         )
         event.settings.upstream_last_sync = now()
-        logger.info(f'refreshed schedule of {event.slug}')
+        logger.info(f"refreshed schedule of {event.slug}")
 
 
 @transaction.atomic()
