@@ -1,3 +1,5 @@
+import datetime as dt
+
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
@@ -37,4 +39,19 @@ class UpstreamSettings(PermissionRequired, FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        return {"obj": self.request.event, "attribute_name": "settings", **kwargs}
+        return {
+            "obj": self.request.event,
+            "attribute_name": "settings",
+            **kwargs,
+        }
+
+    def get_context_data(self, **kwargs):
+        kwargs = super().get_context_data(**kwargs)
+        last_pulled = self.request.event.settings.upstream_last_sync
+        if last_pulled:
+            last_pulled = dt.datetime.strptime(last_pulled, "%Y-%m-%dT%H:%M:%S.%f%z")
+        return {
+            "last_pulled": last_pulled,
+            **kwargs,
+        }
+

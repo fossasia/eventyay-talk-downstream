@@ -1,6 +1,7 @@
 {% extends "orga/base.html" %}
 {% load bootstrap4 %}
 {% load i18n %}
+{% load tz %}
 
 {% block content %}
 
@@ -8,10 +9,9 @@
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form layout='event' %}
-{% if request.event.settings.upstream_last_sync %}
+{% if last_pulled %}
         <p>
-            <!-- FIXME format this correctly -->
-            Last automatic sync: {{ request.event.settings.upstream_last_sync }}
+            Last automatic sync: {{ last_pulled|date:"Y-m-d H:i:s e" }}
         </p>
 {% endif %}
         <div class="submit-group panel">
