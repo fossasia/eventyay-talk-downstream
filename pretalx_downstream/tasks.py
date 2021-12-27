@@ -215,8 +215,9 @@ def _create_talk(*, talk, room, event):
             event=event, code=code, defaults={"submission_type": sub_type}
         )
     except IntegrityError:
+        new_code = f"{event.slug}{code}"[:16]
         sub, created = Submission.objects.get_or_create(
-            event=event, code=f"{event.slug}-{code}", defaults={"submission_type": sub_type}
+            event=event, code=new_code, defaults={"submission_type": sub_type}
         )
 
     sub.submission_type = sub_type
