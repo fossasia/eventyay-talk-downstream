@@ -8,6 +8,7 @@ from xml.etree import ElementTree as ET
 import requests
 from dateutil.parser import parse
 from django.db import transaction
+from django.db.utils import IntegrityError
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django_scopes import scope, scopes_disabled
@@ -209,9 +210,15 @@ def _create_talk(*, talk, room, event):
     ):
         code = talk.attrib["guid"][:16]
 
-    sub, created = Submission.objects.get_or_create(
-        event=event, code=code, defaults={"submission_type": sub_type}
-    )
+    try:
+        sub, created = Submission.objects.get_or_create(
+            event=event, code=code, defaults={"submission_type": sub_type}
+        )
+    except IntegrityError:
+        sub, created = Submission.objects.get_or_create(
+            event=event, code=f"{event.slug}-{code}", defaults={"submission_type": sub_type}
+        )
+
     sub.submission_type = sub_type
     if track:
         sub.track = track
