@@ -1,7 +1,11 @@
 pretalx as a downstream service
 ===============================
 
-This is a plugin for `pretalx`_. 
+This is a plugin for `pretalx`_, allowing you to import external events that provide
+their schedule in the [frab XML](https://github.com/frab/schedule.xml) format.
+
+It comes with several settings regulating pull interval and policies, as well as
+a manage command at ``downstream_pull --event my_event [--sync]``.
 
 Development setup
 -----------------
