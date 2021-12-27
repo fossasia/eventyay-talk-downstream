@@ -26,7 +26,7 @@ class UpstreamSettings(PermissionRequired, FormView):
         action = request.POST.get("action", "save")
         if action == "refresh":
             try:
-                task_refresh_upstream_schedule(request.event.slug)
+                task_refresh_upstream_schedule.apply_async(args=(request.event.slug,))
                 messages.success(request, _("Refreshing schedule …"))
             except Exception as e:
                 messages.error(
@@ -54,4 +54,3 @@ class UpstreamSettings(PermissionRequired, FormView):
             "last_pulled": last_pulled,
             **kwargs,
         }
-

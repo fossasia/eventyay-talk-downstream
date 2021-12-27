@@ -187,10 +187,7 @@ def _create_talk(*, talk, room, event):
         if track:
             track = track[0]
         else:
-            track = Track.objects.create(
-                name=talk.find("track").text, event=event
-            )
-
+            track = Track.objects.create(name=talk.find("track").text, event=event)
 
     optout = False
     with suppress(AttributeError):
