@@ -9,11 +9,11 @@
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form layout='event' %}
-{% if last_pulled %}
-        <p>
-            Last automatic sync: {{ last_pulled|date:"Y-m-d H:i:s e" }}
-        </p>
-{% endif %}
+        {% if last_pulled %}
+            <p>
+                Last automatic sync: {{ last_pulled|date:"Y-m-d H:i:s e" }}
+            </p>
+        {% endif %}
         <div class="submit-group panel">
             <span></span>
             <span class="d-flex flex-row-reverse">
