@@ -13,7 +13,7 @@ class PluginApp(AppConfig):
             "This plugin allows you to use pretalx passively, by letting it import another event's schedule."
         )
         visible = True
-        version = "1.1.0"
+        version = "1.1.1"
 
     def ready(self):
         from . import signals  # NOQA
