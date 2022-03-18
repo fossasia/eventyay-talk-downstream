@@ -227,7 +227,7 @@ def _create_talk(*, talk, room, event):
     persons = talk.find("persons")
     if persons:
         for person in persons.findall("person"):
-            if person.text.strip():
+            if person.text and person.text.strip():
                 user = _create_user(person.text.strip(), event)
                 sub.speakers.add(user)
 
