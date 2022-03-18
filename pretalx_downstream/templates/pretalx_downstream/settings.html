@@ -11,7 +11,7 @@
         {% bootstrap_form form layout='event' %}
         {% if last_pulled %}
             <p>
-                Last automatic sync: {{ last_pulled|date:"Y-m-d H:i:s e" }}
+                Last automatic sync: {{ last_pulled|date:"SHORT_DATETIME_FORMAT" }}
             </p>
         {% endif %}
         <div class="submit-group panel">
