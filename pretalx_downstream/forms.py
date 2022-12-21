@@ -4,7 +4,6 @@ from hierarkey.forms import HierarkeyForm
 
 
 class UpstreamSettingsForm(HierarkeyForm):
-
     downstream_upstream_url = URLField(
         label=_("Upstream URL"),
         help_text=_("URL of your schedule.xml"),
