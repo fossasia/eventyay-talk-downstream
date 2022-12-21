@@ -137,17 +137,18 @@ def _get_changes(talk, optout, sub):
     changes = dict()
     change_tracking_data = {
         "title": talk.find("title").text,
-        "description": talk.find("description").text,
-        "abstract": talk.find("abstract").text,
-        "content_locale": talk.find("language").text or "en",
         "do_not_record": optout,
+        "content_locale": talk.find("language").text or "en",
     }
+    for key in ("description", "abstract"):
+        try:
+            change_tracking_data[key] = talk.find(key.text)
+        except Exception:
+            change_tracking_data[key] = ""
     if talk.find("subtitle").text:
         change_tracking_data["description"] = (
-            talk.find("subtitle").text
-            + "\n"
-            + (change_tracking_data["description"] or "")
-        )
+            talk.find("subtitle").text + "\n" + change_tracking_data["description"]
+        ).strip()
 
     for key, value in change_tracking_data.items():
         if not getattr(sub, key) == value:
