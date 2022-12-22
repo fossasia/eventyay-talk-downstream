@@ -95,7 +95,15 @@ def process_frab(root, event, release_new_version):
     changes = dict()
     for day in root.findall("day"):
         for rm in day.findall("room"):
-            room, _ = Room.objects.get_or_create(event=event, name=rm.attrib["name"])
+            guid = rm.attrib.get("guid")
+            if guid:
+                room, _ = Room.objects.get_or_create(
+                    event=event, guid=guid, defaults={"name": rm.attrib["name"]}
+                )
+            else:
+                room, _ = Room.objects.get_or_create(
+                    event=event, name=rm.attrib["name"]
+                )
             for talk in rm.findall("event"):
                 changes.update(_create_talk(talk=talk, room=room, event=event))
 
