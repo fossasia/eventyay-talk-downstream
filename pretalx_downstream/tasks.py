@@ -138,7 +138,7 @@ def _get_changes(talk, optout, sub):
     change_tracking_data = {
         "title": talk.find("title").text,
         "do_not_record": optout,
-        "content_locale": talk.find("language").text or "en",
+        "content_locale": talk.find("language").text if talk.find("language") else "en",
     }
     for key in ("description", "abstract"):
         try:
