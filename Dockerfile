@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.10-bullseye
 
 RUN apt-get update && \
     apt-get install -y git gettext libmariadb-dev libpq-dev locales libmemcached-dev build-essential \
