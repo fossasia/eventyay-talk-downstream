@@ -27,6 +27,12 @@ This repository contains a docker-compose setup as well as an [ansible](https://
   support](https://docs.traefik.io/user-guide/docker-and-lets-encrypt/). An example to copy into the normal compose file
   is located at ``reverse-proxy-examples/docker-compose``. You can also find a few words on an nginx configuration at
   ``reverse-proxy-examples/nginx``
+* Optional: To adjust the number of [Gunicorn workers](https://docs.gunicorn.org/en/stable/settings.html#workers), provide
+  the container with `GUNICORN_WORKERS` environment variable. Similarly you can use `GUNICORN_MAX_REQUESTS` and
+  `GUNICORN_MAX_REQUESTS_JITTER` to configure the requests a worker instance will process before restarting.
+  Here's how to set an environment variable [in
+  `docker-compose.yml`](https://docs.docker.com/compose/environment-variables/set-environment-variables/)
+  or when using [`docker run` command](https://docs.docker.com/engine/reference/run/#env-environment-variables).
 * Run ``docker-compose up -d ``. After a few minutes the setup should be accessible under http://yourdomain.com/orga
 * Set up a user and an organizer by running ``docker exec -ti pretalx pretalx init``.
 * Set up a cronjob for periodic tasks like this ``15,45 * * * * docker exec pretalx-app pretalx runperiodic``

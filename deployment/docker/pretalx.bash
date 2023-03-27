@@ -2,7 +2,9 @@
 cd /pretalx/src
 export PRETALX_DATA_DIR=/data
 export HOME=/pretalx
-export NUM_WORKERS=$((2 * $(nproc --all)))
+export GUNICORN_WORKERS="${GUNICORN_WORKERS:-${WEB_CONCURRENCY:-$((2 * $(nproc --all)))}}"
+export GUNICORN_MAX_REQUESTS="${GUNICORN_MAX_REQUESTS:-1200}"
+export GUNICORN_MAX_REQUESTS_JITTER="${GUNICORN_MAX_REQUESTS_JITTER:-50}"
 
 if [ ! -d /data/logs ]; then
     mkdir /data/logs;
@@ -24,9 +26,9 @@ fi
 if [ "$1" == "webworker" ]; then
     exec gunicorn pretalx.wsgi \
         --name pretalx \
-        --workers $NUM_WORKERS \
-        --max-requests 1200 \
-        --max-requests-jitter 50 \
+        --workers "${GUNICORN_WORKERS}" \
+        --max-requests "${GUNICORN_MAX_REQUESTS}" \
+        --max-requests-jitter "${GUNICORN_MAX_REQUESTS_JITTER}" \
         --log-level=info \
         --bind=127.0.0.1:80
 fi
