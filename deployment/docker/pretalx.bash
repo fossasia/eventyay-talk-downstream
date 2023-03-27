@@ -28,7 +28,7 @@ if [ "$1" == "webworker" ]; then
         --max-requests 1200 \
         --max-requests-jitter 50 \
         --log-level=info \
-        --bind=unix:/tmp/pretalx.sock
+        --bind=127.0.0.1:80
 fi
 
 if [ "$1" == "taskworker" ]; then

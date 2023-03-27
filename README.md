@@ -22,8 +22,8 @@ This repository contains a docker-compose setup as well as an [ansible](https://
 * If you don't want to use docker volumes, create directories for the persistent data and make them read-writeable for
   the userid 999 and the groupid 999. Change ``pretalx-redis, pretalx-db and pretalx-data`` to the corresponding
   directories you've chosen.
-* Configure a reverse-proxy to handle TLS. Pretalx listens on port 80 in the ``pretalxdocker`` network. I recommend to
-  go with traefik for its ease of setup, docker integration and [LetsEncrypt
+* Configure a reverse-proxy for better security and to handle TLS. Pretalx listens on port 80 in the ``pretalxdocker``
+  network. I recommend to go with traefik for its ease of setup, docker integration and [LetsEncrypt
   support](https://docs.traefik.io/user-guide/docker-and-lets-encrypt/). An example to copy into the normal compose file
   is located at ``reverse-proxy-examples/docker-compose``. You can also find a few words on an nginx configuration at
   ``reverse-proxy-examples/nginx``

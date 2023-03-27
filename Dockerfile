@@ -2,7 +2,6 @@ FROM python:3.10-bullseye
 
 RUN apt-get update && \
     apt-get install -y git gettext libmariadb-dev libpq-dev locales libmemcached-dev build-essential \
-            nginx \
             supervisor \
             sudo \
             locales \
@@ -24,7 +23,6 @@ ENV LC_ALL=C.UTF-8
 COPY pretalx/src /pretalx/src
 COPY deployment/docker/pretalx.bash /usr/local/bin/pretalx
 COPY deployment/docker/supervisord.conf /etc/supervisord.conf
-COPY deployment/docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN pip3 install -U pip setuptools wheel typing && \
     pip3 install -e /pretalx/src/ && \
@@ -36,7 +34,6 @@ RUN python3 -m pretalx makemigrations
 RUN python3 -m pretalx migrate && python3 -m pretalx rebuild
 
 RUN chmod +x /usr/local/bin/pretalx && \
-    rm /etc/nginx/sites-enabled/default && \
     cd /pretalx/src && \
     rm -f pretalx.cfg && \
     chown -R pretalxuser:pretalxuser /pretalx /data && \
