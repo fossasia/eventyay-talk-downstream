@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-14 23:19+0000\n"
+"POT-Creation-Date: 2023-07-13 16:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,39 +29,39 @@ msgid ""
 "another event's schedule."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:9
+#: local/pretalx-downstream/pretalx_downstream/forms.py:8
 msgid "Upstream URL"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:10
+#: local/pretalx-downstream/pretalx_downstream/forms.py:9
 msgid "URL of your schedule.xml"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:14
+#: local/pretalx-downstream/pretalx_downstream/forms.py:13
 msgid "Interval"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:14
+#: local/pretalx-downstream/pretalx_downstream/forms.py:13
 msgid "Checking interval in minutes."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:18
+#: local/pretalx-downstream/pretalx_downstream/forms.py:17
 msgid "Check only during event time"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:19
+#: local/pretalx-downstream/pretalx_downstream/forms.py:18
 msgid "From now until one day after the event ends"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:21
+#: local/pretalx-downstream/pretalx_downstream/forms.py:20
 msgid "Schedule check time"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:25
+#: local/pretalx-downstream/pretalx_downstream/forms.py:24
 msgid "Discard version name after"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/forms.py:27
+#: local/pretalx-downstream/pretalx_downstream/forms.py:26
 msgid ""
 "Everything after the first occurence of the entered string in schedule "
 "version will be discarded. Leave empty if you want to keep the full schedule "
@@ -72,14 +72,14 @@ msgstr ""
 msgid "Upstream"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/tasks.py:36
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:41
 #, python-brace-format
 msgid ""
 "The pretalx-downstream plugin is installed for {event_slug}, but no upstream "
 "URL was configured."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/tasks.py:44
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:49
 #, python-brace-format
 msgid ""
 "Could not retrieve upstream schedule for {event_slug}, received {response} "
