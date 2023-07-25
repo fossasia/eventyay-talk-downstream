@@ -16,7 +16,12 @@ from pretalx.celery_app import app
 from pretalx.event.models import Event
 from pretalx.person.models import SpeakerProfile, User
 from pretalx.schedule.models import Room, TalkSlot
-from pretalx.submission.models import Submission, SubmissionType, Track
+from pretalx.submission.models import (
+    Submission,
+    SubmissionStates,
+    SubmissionType,
+    Track,
+)
 
 from .models import UpstreamResult
 
@@ -218,12 +223,16 @@ def _create_talk(*, talk, room, event):
 
     try:
         sub, created = Submission.objects.get_or_create(
-            event=event, code=code, defaults={"submission_type": sub_type}
+            event=event,
+            code=code,
+            defaults={"submission_type": sub_type, "state": SubmissionStates.CONFIRMED},
         )
     except IntegrityError:
         new_code = f"{event.slug[:16-len(code)]}{code}"
         sub, created = Submission.objects.get_or_create(
-            event=event, code=new_code, defaults={"submission_type": sub_type}
+            event=event,
+            code=new_code,
+            defaults={"submission_type": sub_type, "state": SubmissionStates.CONFIRMED},
         )
 
     sub.submission_type = sub_type
