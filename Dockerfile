@@ -32,15 +32,20 @@ RUN pip3 install -U pip setuptools wheel typing && \
 
 
 RUN python3 -m pretalx makemigrations
-RUN python3 -m pretalx migrate && python3 -m pretalx rebuild
+RUN python3 -m pretalx migrate
+
+RUN apt-get update && \
+    apt-get install -y nodejs npm && \
+    python3 -m pretalx rebuild && \
+    apt-get remove -y nodejs npm && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN chmod +x /usr/local/bin/pretalx && \
     cd /pretalx/src && \
     rm -f pretalx.cfg && \
     chown -R pretalxuser:pretalxuser /pretalx /data && \
     rm -f /pretalx/src/data/.secret
-
-
 
 USER pretalxuser
 VOLUME ["/etc/pretalx", "/data"]
