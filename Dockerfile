@@ -20,6 +20,7 @@ RUN apt-get update && \
 ENV LC_ALL=C.UTF-8
 
 
+COPY pretalx/pyproject.toml /pretalx
 COPY pretalx/src /pretalx/src
 COPY deployment/docker/pretalx.bash /usr/local/bin/pretalx
 COPY deployment/docker/supervisord.conf /etc/supervisord.conf
