@@ -27,7 +27,7 @@ COPY deployment/docker/supervisord.conf /etc/supervisord.conf
 
 RUN pip3 install -U pip setuptools wheel typing && \
     pip3 install -e /pretalx/ && \
-    pip3 install django-redis pylibmc mysqlclient psycopg2-binary redis==3.3.1 && \
+    pip3 install django-redis pylibmc mysqlclient psycopg2-binary redis && \
     pip3 install gunicorn
 
 
