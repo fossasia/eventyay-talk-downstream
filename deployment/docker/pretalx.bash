@@ -30,7 +30,7 @@ if [ "$1" == "webworker" ]; then
         --max-requests "${GUNICORN_MAX_REQUESTS}" \
         --max-requests-jitter "${GUNICORN_MAX_REQUESTS_JITTER}" \
         --log-level=info \
-        --bind=127.0.0.1:80
+        --bind=0.0.0.0:80
 fi
 
 if [ "$1" == "taskworker" ]; then
