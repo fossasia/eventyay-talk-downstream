@@ -1,6 +1,8 @@
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy
 
+from pretalx_downstream import __version__
+
 
 class PluginApp(AppConfig):
     name = "pretalx_downstream"
@@ -13,7 +15,7 @@ class PluginApp(AppConfig):
             "This plugin allows you to use pretalx passively, by letting it import another event's schedule."
         )
         visible = True
-        version = "1.1.5"
+        version = __version__
         category = "FEATURE"
 
     def ready(self):
