@@ -20,7 +20,7 @@ This repository contains a docker-compose setup as well as an [ansible](https://
   traefic as reverse proxy) or change the line to ``ports: - "127.0.0.1:8355:80"`` (if you use nginx). **Change the
   database password.**
 * If you don't want to use docker volumes, create directories for the persistent data and make them read-writeable for
-  the userid 999 and the groupid 999. Change ``pretalx-redis, pretalx-db and pretalx-data`` to the corresponding
+  the userid 999 and the groupid 999. Change ``pretalx-redis``, ``pretalx-db``, ``pretalx-data`` and ``pretalx-public`` to the corresponding
   directories you've chosen.
 * Configure a reverse-proxy for better security and to handle TLS. Pretalx listens on port 80 in the ``pretalxdocker``
   network. I recommend to go with traefik for its ease of setup, docker integration and [LetsEncrypt
@@ -29,7 +29,7 @@ This repository contains a docker-compose setup as well as an [ansible](https://
   ``reverse-proxy-examples/nginx``
 * Optional: To adjust the number of [Gunicorn workers](https://docs.gunicorn.org/en/stable/settings.html#workers), provide
   the container with `GUNICORN_WORKERS` environment variable. Similarly you can use `GUNICORN_MAX_REQUESTS` and
-  `GUNICORN_MAX_REQUESTS_JITTER` to configure the requests a worker instance will process before restarting.
+  `GUNICORN_MAX_REQUESTS_JITTER` to configure the requests a worker instance will process before restarting. `GUNICORN_FORWARDED_ALLOW_IPS` lets you specify which IPs to trust (i.e. which reverse proxies' `X-Forwarded-*` headers can be used to infer connection security).
   Here's how to set an environment variable [in
   `docker-compose.yml`](https://docs.docker.com/compose/environment-variables/set-environment-variables/)
   or when using [`docker run` command](https://docs.docker.com/engine/reference/run/#env-environment-variables).

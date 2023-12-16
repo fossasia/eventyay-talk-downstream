@@ -13,6 +13,7 @@ RUN apt-get update && \
     /usr/sbin/update-locale LANG=C.UTF-8 && \
     mkdir /etc/pretalx && \
     mkdir /data && \
+    mkdir /public && \
     groupadd -g 999 pretalxuser && \
     useradd -r -u 999 -g pretalxuser -d /pretalx -ms /bin/bash pretalxuser && \
     echo 'pretalxuser ALL=(ALL) NOPASSWD: /usr/bin/supervisord' >> /etc/sudoers
@@ -36,19 +37,18 @@ RUN python3 -m pretalx migrate
 
 RUN apt-get update && \
     apt-get install -y nodejs npm && \
-    python3 -m pretalx rebuild && \
-    apt-get remove -y nodejs npm && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    python3 -m pretalx rebuild
 
 RUN chmod +x /usr/local/bin/pretalx && \
     cd /pretalx/src && \
     rm -f pretalx.cfg && \
-    chown -R pretalxuser:pretalxuser /pretalx /data && \
+    chown -R pretalxuser:pretalxuser /pretalx /data /public && \
     rm -f /pretalx/src/data/.secret
 
 USER pretalxuser
-VOLUME ["/etc/pretalx", "/data"]
+VOLUME ["/etc/pretalx", "/data", "/public"]
 EXPOSE 80
 ENTRYPOINT ["pretalx"]
 CMD ["all"]

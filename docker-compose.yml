@@ -7,11 +7,15 @@ services:
     depends_on: 
       - redis
       - db
+    environment:
+      PRETALX_FILESYSTEM_MEDIA: /public/media
+      PRETALX_FILESYSTEM_STATIC: /public/static
     ports:
       - "80:80"
     volumes: 
       - ./conf/pretalx.cfg:/etc/pretalx/pretalx.cfg:ro
       - pretalx-data:/data
+      - pretalx-public:/public
     labels:
        traefik.docker.network: "pretalxdocker"
        traefik.enable: "true"
@@ -39,5 +43,6 @@ services:
 volumes:
   pretalx-db:
   pretalx-data:
+  pretalx-public:
   pretalx-redis:
 
