@@ -25,7 +25,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.push_to_docker_hub == 'true' && 'pretalx/standalone' || format('ghcr.io/{0}', github.repository) }}
+          images: ${{ env.push_to_docker_hub == 'true' && 'eventyay-talk/standalone' || format('ghcr.io/{0}', github.repository) }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
