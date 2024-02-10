@@ -28,7 +28,7 @@ jobs:
         id: meta
         with:
           images: |
-            eventyay-talk/standalone
+            eventyay/eventyay-talk
           tags: |
             type=ref,event=branch
             type=ref,event=pr
