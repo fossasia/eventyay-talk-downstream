@@ -93,8 +93,6 @@ def task_refresh_upstream_schedule(event_slug):
 def process_frab(root, event, release_new_version):
     """Take an xml document root and an event, and releases a schedule with the
     data from the xml document.
-
-    Copied directly from pretalx.schedule.utils.process_frab
     """
 
     changes = dict()
