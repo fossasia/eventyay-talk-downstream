@@ -144,12 +144,16 @@ def _create_user(name, event):
     return user
 
 
-def _get_changes(talk, optout, sub):
+def _get_changes(talk, optout, sub, fallback_locale=None):
     changes = dict()
     change_tracking_data = {
         "title": talk.find("title").text,
         "do_not_record": optout,
-        "content_locale": talk.find("language").text if talk.find("language") else "en",
+        "content_locale": (
+            talk.find("language").text
+            if talk.find("language")
+            else fallback_locale or "en"
+        ),
     }
     for key in ("description", "abstract"):
         try:
@@ -237,7 +241,7 @@ def _create_talk(*, talk, room, event):
     if track:
         sub.track = track
 
-    changes = _get_changes(talk, optout, sub)
+    changes = _get_changes(talk, optout, sub, fallback_locale=event.locale)
     sub.save()
 
     persons = talk.find("persons")
