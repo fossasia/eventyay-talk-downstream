@@ -5,8 +5,8 @@ from contextlib import suppress
 from logging import getLogger
 from xml.etree import ElementTree as ET
 
-import requests
 import dateutil.parser
+import requests
 from django.db import transaction
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
