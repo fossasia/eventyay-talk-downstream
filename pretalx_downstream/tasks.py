@@ -6,7 +6,7 @@ from logging import getLogger
 from xml.etree import ElementTree as ET
 
 import requests
-from dateutil.parser import parse
+import dateutil.parser
 from django.db import transaction
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
@@ -174,12 +174,12 @@ def _get_changes(talk, optout, sub, fallback_locale=None):
 
 def _create_talk(*, talk, room, event):
     date = talk.find("date").text
-    start = parse(date + " " + talk.find("start").text)
+    start = dateutil.parser.parse(date + " " + talk.find("start").text)
     hours, minutes = talk.find("duration").text.split(":")
     duration = dt.timedelta(hours=int(hours), minutes=int(minutes))
     duration_in_minutes = duration.total_seconds() / 60
     try:
-        end = parse(date + " " + talk.find("end").text)
+        end = dateutil.parser.parse(date + " " + talk.find("end").text)
     except AttributeError:
         end = start + duration
     sub_type = SubmissionType.objects.filter(
