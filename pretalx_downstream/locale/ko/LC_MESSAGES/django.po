@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-03 08:44+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: local/pretalx-downstream/pretalx_downstream/apps.py:12
+msgid "pretalx as a downstream service"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/apps.py:15
+msgid ""
+"This plugin allows you to use pretalx passively, by letting it import "
+"another event's schedule."
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:8
+msgid "Upstream URL"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:9
+msgid "URL of your schedule.xml"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:13
+msgid "Interval"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:13
+msgid "Checking interval in minutes."
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:17
+msgid "Check only during event time"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:18
+msgid "From now until one day after the event ends"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:20
+msgid "Schedule check time"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:24
+msgid "Discard version name after"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/forms.py:26
+msgid ""
+"Everything after the first occurence of the entered string in schedule "
+"version will be discarded. Leave empty if you want to keep the full schedule "
+"version"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/signals.py:66
+msgid "Upstream"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:41
+#, python-brace-format
+msgid ""
+"The pretalx-downstream plugin is installed for {event_slug}, but no upstream "
+"URL was configured."
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/tasks.py:49
+#, python-brace-format
+msgid ""
+"Could not retrieve upstream schedule for {event_slug}, received {response} "
+"response."
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:8
+msgid "Set up upstream sync"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:25
+msgid "Save"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:32
+msgid "Check for new talks"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/views.py:30
+msgid "Refreshing schedule …"
+msgstr ""
+
+#: local/pretalx-downstream/pretalx_downstream/views.py:33
+msgid "Failure when processing remote schedule: "
+msgstr ""
