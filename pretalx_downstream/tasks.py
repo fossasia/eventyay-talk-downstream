@@ -157,7 +157,7 @@ def _get_changes(talk, optout, sub, fallback_locale=None):
     }
     for key in ("description", "abstract"):
         try:
-            change_tracking_data[key] = talk.find(key.text)
+            change_tracking_data[key] = talk.find(key).text
         except Exception:
             change_tracking_data[key] = ""
     if talk.find("subtitle").text:
