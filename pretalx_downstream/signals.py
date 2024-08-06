@@ -47,7 +47,8 @@ def refresh_upstream_schedule(sender, request=None, **kwargs):
                 > interval
             ):
                 task_refresh_upstream_schedule.apply_async(
-                    kwargs={"event_slug": event.slug}
+                    kwargs={"event_slug": event.slug},
+                    ignore_result=True,
                 )
 
             if event.upstream_results.count() > 3:
