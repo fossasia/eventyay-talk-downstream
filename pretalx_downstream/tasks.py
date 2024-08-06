@@ -28,7 +28,7 @@ from .models import UpstreamResult
 logger = getLogger("pretalx_downstream")
 
 
-@app.task()
+@app.task(name="pretalx_downstream.refresh_upstream_schedule")
 def task_refresh_upstream_schedule(event_slug):
     with scopes_disabled():
         event = Event.objects.get(slug__iexact=event_slug)
