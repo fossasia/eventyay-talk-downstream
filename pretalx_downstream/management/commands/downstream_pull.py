@@ -23,4 +23,6 @@ class Command(BaseCommand):
             if sync:
                 task_refresh_upstream_schedule(event_slug)
             else:
-                task_refresh_upstream_schedule.apply_async(args=(event_slug,))
+                task_refresh_upstream_schedule.apply_async(
+                    args=(event_slug,), ignore_result=True
+                )

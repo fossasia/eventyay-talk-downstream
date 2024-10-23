@@ -62,8 +62,8 @@ msgstr ""
 #: local/pretalx-downstream/pretalx_downstream/forms.py:26
 msgid ""
 "Everything after the first occurence of the entered string in schedule "
-"version will be discarded. Leave empty if you want to keep the full schedule "
-"version"
+"version will be discarded. Leave empty if you want to keep the full schedule"
+" version"
 msgstr ""
 
 #: local/pretalx-downstream/pretalx_downstream/signals.py:66
@@ -73,8 +73,8 @@ msgstr ""
 #: local/pretalx-downstream/pretalx_downstream/tasks.py:41
 #, python-brace-format
 msgid ""
-"The pretalx-downstream plugin is installed for {event_slug}, but no upstream "
-"URL was configured."
+"The pretalx-downstream plugin is installed for {event_slug}, but no upstream"
+" URL was configured."
 msgstr ""
 
 #: local/pretalx-downstream/pretalx_downstream/tasks.py:49

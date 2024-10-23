@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-12 08:00+0000\n"
+"POT-Creation-Date: 2024-10-20 19:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
 #: local/pretalx-downstream/pretalx_downstream/apps.py:12
 msgid "pretalx as a downstream service"
 msgstr ""
@@ -68,7 +69,7 @@ msgid ""
 "version"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/signals.py:66
+#: local/pretalx-downstream/pretalx_downstream/signals.py:67
 msgid "Upstream"
 msgstr ""
 
@@ -86,22 +87,22 @@ msgid ""
 "response."
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:8
+#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:5
 msgid "Set up upstream sync"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:25
+#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:18
 msgid "Save"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:32
+#: local/pretalx-downstream/pretalx_downstream/templates/pretalx_downstream/settings.html:25
 msgid "Check for new talks"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/views.py:30
+#: local/pretalx-downstream/pretalx_downstream/views.py:32
 msgid "Refreshing schedule …"
 msgstr ""
 
-#: local/pretalx-downstream/pretalx_downstream/views.py:33
+#: local/pretalx-downstream/pretalx_downstream/views.py:35
 msgid "Failure when processing remote schedule: "
 msgstr ""
