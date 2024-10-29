@@ -3,7 +3,7 @@ import hashlib
 import json
 from contextlib import suppress
 from logging import getLogger
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree
 
 import dateutil.parser
 import requests
@@ -28,7 +28,7 @@ from .models import UpstreamResult
 logger = getLogger("pretalx_downstream")
 
 
-@app.task()
+@app.task(name="pretalx_downstream.refresh_upstream_schedule")
 def task_refresh_upstream_schedule(event_slug):
     with scopes_disabled():
         event = Event.objects.get(slug__iexact=event_slug)
@@ -64,7 +64,7 @@ def task_refresh_upstream_schedule(event_slug):
                 event.settings.upstream_last_sync = now()
                 return
 
-        root = ET.fromstring(content)
+        root = ElementTree.fromstring(content)
         schedule_version = root.find("version").text
 
         if event.settings.downstream_discard_after:
@@ -230,7 +230,7 @@ def _create_talk(*, talk, room, event):
             defaults={"submission_type": sub_type, "state": SubmissionStates.CONFIRMED},
         )
     except IntegrityError:
-        new_code = f"{event.slug[:16-len(code)]}{code}"
+        new_code = f"{event.slug[:16 - len(code)]}{code}"
         sub, created = Submission.objects.get_or_create(
             event=event,
             code=new_code,

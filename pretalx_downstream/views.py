@@ -3,7 +3,7 @@ import datetime as dt
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
-from pretalx.common.mixins.views import PermissionRequired
+from pretalx.common.views.mixins import PermissionRequired
 
 from .forms import UpstreamSettingsForm
 from .tasks import task_refresh_upstream_schedule
@@ -26,7 +26,9 @@ class UpstreamSettings(PermissionRequired, FormView):
         action = request.POST.get("action", "save")
         if action == "refresh":
             try:
-                task_refresh_upstream_schedule.apply_async(args=(request.event.slug,))
+                task_refresh_upstream_schedule.apply_async(
+                    args=(request.event.slug,), ignore_result=True
+                )
                 messages.success(request, _("Refreshing schedule …"))
             except Exception as e:
                 messages.error(
